@@ -1,4 +1,4 @@
-# UI-Router Core &nbsp;[![Build Status](https://github.com/ui-router/core/workflows/CI:%20UIRouter%20Core/badge.svg)](https://github.com/ui-router/core/actions?query=workflow%3A%22CI:%20UIRouter%20Core%22)
+# UI-Router Core
 
 UI-Router core provides client-side [Single Page Application](https://en.wikipedia.org/wiki/Single-page_application)
 routing for JavaScript.
