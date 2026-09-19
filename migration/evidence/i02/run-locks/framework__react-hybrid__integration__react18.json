@@ -11,7 +11,7 @@
     "sourceSnapshotSha256": "e1b4ceed55cc2d9b991b611e766366af6ed7332e1b9ebc3563a55079209e0c44"
   },
   "contracts": {
-    "matrixSha256": "895d1912379aecd11089b87ad8c06521e28d864d1c14f1cca3c44fa35decba5d",
+    "matrixSha256": "89bbafee99d630c6e37637f166fed97385035b6621475326969ece5967aa3bf3",
     "isolatedProjectsSha256": "c450f2e9e10d8baae3cdb1c42f68c197ba22fba638692b0929c085ed85d39689",
     "packageArtifactsSha256": "2078a028a8301c2e6c50a60735b40f1b2df5afcdace4d9dd521a655123eea0ba",
     "packageClassificationSha256": "a8a069a2946c2e93f92121378d57857da4f038fac000e4f73ff4c465de320365",
