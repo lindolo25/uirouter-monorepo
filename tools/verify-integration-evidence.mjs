@@ -129,8 +129,8 @@ if (
 )
   fail("proof identity differs");
 const implementationCommit = evidence.repository.commit;
-const reviewedScopeHead = "cc2f4c6d9f018d49b869087bfd1eb79eeb1cf7f7";
-const reviewedScopeTree = "b9955489a75043658163c3679b4ab1a05cf78155";
+const reviewedScopeHead = "9b7403b1c8d9346c03ede5ab83247215a182adec";
+const reviewedScopeTree = "5066745cba4892c96f57a5a3b62ba93d30afd53a";
 if (
   evidence.repository.dirty !== false ||
   git(["rev-parse", `${implementationCommit}^{tree}`]) !==
@@ -163,7 +163,7 @@ if (
       reviewedScopeHead,
       "HEAD",
     ],
-    { cwd: repository },
+    { cwd: repository }
   ).status !== 0
 )
   fail("reviewed integration-proof scope is not an ancestor of HEAD");
@@ -210,6 +210,8 @@ const c01OwnedPaths = new Set([
   "tools/verify-package-manager.mjs",
 ]);
 const p03OwnedPaths = new Set([
+  "frameworks/angularjs/uirouter-angularjs/package.json",
+  ".github/workflows/p03-angularjs-linux-proof.yml",
   ".github/workflows/p03-linux-proof.yml",
   "frameworks/react-hybrid/uirouter-react-hybrid/CHANGELOG.md",
   "frameworks/react-hybrid/uirouter-react-hybrid/README.md",
@@ -241,6 +243,7 @@ const p03OwnedPaths = new Set([
   "tools/run-integration-matrix.mjs",
   "tools/test-integration-matrix.mjs",
   "tools/test-integration-runner.mjs",
+  "tools/verify-angularjs-lint.mjs",
   "tools/verify-ci-current-waivers.mjs",
   "tools/verify-integration-evidence.mjs",
   "tools/verify-internal-deps.mjs",
