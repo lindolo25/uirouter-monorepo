@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "task": "I02",
   "owner": "ui-router-maintainers",
-  "matrixSha256": "895d1912379aecd11089b87ad8c06521e28d864d1c14f1cca3c44fa35decba5d",
+  "matrixSha256": "89bbafee99d630c6e37637f166fed97385035b6621475326969ece5967aa3bf3",
   "repository": {
     "commit": "336a303250888e3351fb7afbd03208e7f1236744",
     "tree": "dc9e0ea0fcf042c48e84473f0ddd8467090c5572",
