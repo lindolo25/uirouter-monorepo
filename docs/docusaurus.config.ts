@@ -67,24 +67,24 @@ const config: Config = {
         excludeCategories: true
       }
     ],
-    [
-      "docusaurus-plugin-typedoc",
-      {
-        id: "api-angular",
-        entryPoints: ["../frameworks/angular/uirouter-angular/src/index.ts"],
-        tsconfig: "./frameworks/angular/uirouter-angular/tsconfig.docgen.json",
-        out: "docs/api/angular",
-        sanitizeComments: true,
-        excludeExternals: true,
-        excludeNotDocumented: false,
-        excludeInternal: true,
-        excludePrivate: true,
-        excludePrivateClassFields: true,
-        excludeProtected: true,
-        excludeReferences: true,
-        excludeCategories: true
-      }
-    ]
+    // [
+    //   "docusaurus-plugin-typedoc",
+    //   {
+    //     id: "api-angular",
+    //     entryPoints: ["../frameworks/angular/uirouter-angular/src/index.ts"],
+    //     tsconfig: "./frameworks/angular/uirouter-angular/tsconfig.docgen.json",
+    //     out: "docs/api/angular",
+    //     sanitizeComments: true,
+    //     excludeExternals: true,
+    //     excludeNotDocumented: false,
+    //     excludeInternal: true,
+    //     excludePrivate: true,
+    //     excludePrivateClassFields: true,
+    //     excludeProtected: true,
+    //     excludeReferences: true,
+    //     excludeCategories: true
+    //   }
+    // ]
   ],
 
   themeConfig: {
