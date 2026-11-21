@@ -1,0 +1,3 @@
+# Gate G3: generated files stay out of Git.
+/build
+/.docusaurus
