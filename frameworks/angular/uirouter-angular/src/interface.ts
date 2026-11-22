@@ -4,7 +4,7 @@ import { ComponentTypeCallback, ModuleTypeCallback } from './lazyLoad/lazyLoadNg
 
 /**
  * The StateDeclaration object is used to define a state or nested state.
- * It should be registered with the [[StateRegistry]].
+ * It should be registered with the {@link StateRegistry}.
  *
  * #### Example:
  * ```js
@@ -29,7 +29,7 @@ export interface Ng2StateDeclaration<T = unknown> extends StateDeclaration, Ng2V
   /**
    * An optional object used to define multiple named views.
    *
-   * Each key is the name of a view, and each value is a [[Ng2ViewDeclaration]].
+   * Each key is the name of a view, and each value is a {@link Ng2ViewDeclaration}.
    * Unnamed views are internally renamed to `$default`.
    *
    * A view's name is used to match an active `<ui-view>` directive in the DOM.  When the state
@@ -177,7 +177,7 @@ export interface Ng2ViewDeclaration<T = unknown> extends _ViewDeclaration {
   /**
    * The `Component` class to use for this view.
    *
-   * A property of [[Ng2StateDeclaration]] or [[Ng2ViewDeclaration]]:
+   * A property of {@link Ng2StateDeclaration} or {@link Ng2ViewDeclaration}:
    *
    * ### The component class which will be used for this view.
    *
@@ -211,7 +211,7 @@ export interface Ng2ViewDeclaration<T = unknown> extends _ViewDeclaration {
    *
    * ### Accessing Resolve Data
    *
-   * The component can access the Transition's [[Ng2StateDeclaration.resolve]] data in one of two ways:
+   * The component can access the Transition's {@link Ng2StateDeclaration.resolve} data in one of two ways:
    *
    * 1) Using Dependency Injection in the component constructor
    *
@@ -259,11 +259,11 @@ export interface Ng2ViewDeclaration<T = unknown> extends _ViewDeclaration {
   component?: Type<T>;
 
   /**
-   * An object which maps `resolve` keys to [[component]] `bindings`.
+   * An object which maps `resolve` keys to {@link component} `bindings`.
    *
-   * A property of [[Ng2StateDeclaration]] or [[Ng2ViewDeclaration]]:
+   * A property of {@link Ng2StateDeclaration} or {@link Ng2ViewDeclaration}:
    *
-   * When using a [[component]] declaration (`component: MyComponent`), each input binding for the component is supplied
+   * When using a {@link component} declaration (`component: MyComponent`), each input binding for the component is supplied
    * data from a resolve of the same name, by default.  You may supply data from a different resolve name by mapping it here.
    * This might be useful if you want to reuse the same resolve value with various components with different input binding names.
    *
@@ -303,9 +303,9 @@ export interface Ng2ViewDeclaration<T = unknown> extends _ViewDeclaration {
 
 export interface UiOnParamsChanged {
   /**
-   * A UI-Router view has an Angular `Component` (see [[Ng2ViewDeclaration.component]]).
+   * A UI-Router view has an Angular `Component` (see {@link Ng2ViewDeclaration.component}).
    * The `Component` may define component-level hooks which UI-Router will call at the appropriate times.
-   * These callbacks are similar to Transition Hooks ([[IHookRegistry]]), but are only called if the view/component is currently active.
+   * These callbacks are similar to Transition Hooks ({@link IHookRegistry}), but are only called if the view/component is currently active.
    *
    * The uiOnParamsChanged callback is called when parameter values change.
    *
@@ -317,7 +317,7 @@ export interface UiOnParamsChanged {
    *
    * - An object with (only) changed parameter values.
    *   The keys are the parameter names and the values are the new parameter values.
-   * - The [[Transition]] which changed the parameter values.
+   * - The {@link Transition} which changed the parameter values.
    *
    * #### Example:
    * ```js
@@ -338,15 +338,15 @@ export interface UiOnParamsChanged {
 
 export interface UiOnExit {
   /**
-   * A UI-Router view has an Angular `Component` (see [[Ng2ViewDeclaration.component]]).
+   * A UI-Router view has an Angular `Component` (see {@link Ng2ViewDeclaration.component}).
    * The `Component` may define component-level hooks which UI-Router will call at the appropriate times.
-   * These callbacks are similar to Transition Hooks ([[IHookRegistry]]), but are only called if the view/component is currently active.
+   * These callbacks are similar to Transition Hooks ({@link IHookRegistry}), but are only called if the view/component is currently active.
    *
    * The uiCanExit callback is called when the routed component's state is about to be exited.
    *
    * The callback can be used to cancel or alter the new Transition that would otherwise exit the component's state.
    *
-   * This callback is used to inform a view that it is about to be exited, due to a new [[Transition]].
+   * This callback is used to inform a view that it is about to be exited, due to a new {@link Transition}.
    * The callback can ask for user confirmation, and cancel or alter the new Transition.  The callback should
    * return a value, or a promise for a value.  If a promise is returned, the new Transition waits until the
    * promise settles.
@@ -379,7 +379,7 @@ export interface UiOnExit {
    * }
    * ```
    *
-   * @return a hook result which may cancel or alter the pending Transition (see [[HookResult]])
+   * @return a hook result which may cancel or alter the pending Transition (see {@link HookResult})
    */
   uiCanExit(newTransition?: Transition): HookResult;
 }
@@ -387,9 +387,9 @@ export interface UiOnExit {
 /**
  * The shape of a controller for a view (and/or component), defining the controller callbacks.
  *
- * A UI-Router view has an Angular `Component` (see [[Ng2ViewDeclaration.component]]).
+ * A UI-Router view has an Angular `Component` (see {@link Ng2ViewDeclaration.component}).
  * The `Component` may define component-level hooks which UI-Router will call at the appropriate times.
- * These callbacks are similar to Transition Hooks ([[IHookRegistry]]), but are only called if the view/component is currently active.
+ * These callbacks are similar to Transition Hooks ({@link IHookRegistry}), but are only called if the view/component is currently active.
  *
  * This interface defines the UI-Router component callbacks.
  *
@@ -407,7 +407,7 @@ export interface Ng2Component extends Component {
    *
    * - An object with (only) changed parameter values.
    *   The keys are the parameter names and the values are the new parameter values.
-   * - The [[Transition]] which changed the parameter values.
+   * - The {@link Transition} which changed the parameter values.
    *
    * #### Example:
    * ```js
@@ -430,7 +430,7 @@ export interface Ng2Component extends Component {
    *
    * The callback can be used to cancel or alter the new Transition that would otherwise exit the component's state.
    *
-   * This callback is used to inform a view that it is about to be exited, due to a new [[Transition]].
+   * This callback is used to inform a view that it is about to be exited, due to a new {@link Transition}.
    * The callback can ask for user confirmation, and cancel or alter the new Transition.  The callback should
    * return a value, or a promise for a value.  If a promise is returned, the new Transition waits until the
    * promise settles.
@@ -463,7 +463,7 @@ export interface Ng2Component extends Component {
    * }
    * ```
    *
-   * @return a hook result which may cancel or alter the pending Transition (see [[HookResult]])
+   * @return a hook result which may cancel or alter the pending Transition (see {@link HookResult})
    */
   uiCanExit?(newTransition?: Transition): HookResult;
 }

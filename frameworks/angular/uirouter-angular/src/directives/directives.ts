@@ -13,7 +13,7 @@ export const _UIROUTER_DIRECTIVES = [UISref, AnchorUISref, UIView, UISrefActive,
 
 /**
  * References to the UI-Router directive classes, for use within a @Component's `directives:` property
- * @deprecated use [[UIRouterModule]]
+ * @deprecated use {@link UIRouterModule}
  * @internal
  */
 export const UIROUTER_DIRECTIVES = _UIROUTER_DIRECTIVES;

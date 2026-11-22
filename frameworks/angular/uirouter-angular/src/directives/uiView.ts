@@ -74,7 +74,7 @@ function ng2ComponentInputs<T>(mirror: ComponentMirror<T>): InputMapping[] {
  * ### Purpose
  *
  * This directive is used in a Component template (or as the root component) to create a viewport.  The viewport
- * is filled in by a view (as defined by a [[Ng2ViewDeclaration]] inside a [[Ng2StateDeclaration]]) when the view's
+ * is filled in by a view (as defined by a {@link Ng2ViewDeclaration} inside a {@link Ng2StateDeclaration}) when the view's
  * state has been activated.
  *
  * #### Example:
@@ -109,6 +109,8 @@ function ng2ComponentInputs<T>(mirror: ComponentMirror<T>): InputMapping[] {
  * <!-- When 'foo' state is active, filled by FooComponent -->
  * <ui-view></ui-view>
  * ```
+ *
+ * @category Components
  */
 @Component({
   selector: 'ui-view, [ui-view]',

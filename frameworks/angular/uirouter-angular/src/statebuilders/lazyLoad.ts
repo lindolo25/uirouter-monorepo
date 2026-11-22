@@ -2,12 +2,12 @@ import { BuilderFunction, StateObject } from '@uirouter/core';
 import { loadComponent, loadNgModule } from '../lazyLoad/lazyLoadNgModule';
 
 /**
- * This is a [[StateBuilder.builder]] function for ngModule lazy loading in Angular.
+ * This is a {@link StateBuilder.builder} function for ngModule lazy loading in Angular.
  *
- * When the [[StateBuilder]] builds a [[State]] object from a raw [[StateDeclaration]], this builder
- * decorates the `lazyLoad` property for states that have a [[Ng2StateDeclaration.ngModule]] declaration.
+ * When the {@link StateBuilder} builds a {@link StateObject} object from a raw {@link StateDeclaration}, this builder
+ * decorates the `lazyLoad` property for states that have a {@link Ng2StateDeclaration.loadChildren} declaration.
  *
- * If the state has a [[Ng2StateDeclaration.ngModule]], it will create a `lazyLoad` function
+ * If the state has a {@link Ng2StateDeclaration.loadChildren}, it will create a `lazyLoad` function
  * that in turn calls `loadNgModule(loadNgModuleFn)`.
  *
  * #### Example:

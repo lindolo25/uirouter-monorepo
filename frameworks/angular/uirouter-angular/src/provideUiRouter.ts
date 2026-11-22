@@ -4,7 +4,7 @@ import { _UIROUTER_INSTANCE_PROVIDERS, _UIROUTER_SERVICE_PROVIDERS } from './pro
 
 /**
  * Sets up providers necessary to enable UI-Router for the application. Intended as a replacement
- * for [[UIRouterModule.forRoot]] in newer standalone based applications.
+ * for {@link UIRouterModule.forRoot} in newer standalone based applications.
  *
  * Example:
  * ```js
@@ -25,7 +25,9 @@ import { _UIROUTER_INSTANCE_PROVIDERS, _UIROUTER_SERVICE_PROVIDERS } from './pro
  * ```
  *
  * @param config declarative UI-Router configuration
- * @returns an `EnvironmentProviders` which provides the [[UIRouter]] singleton instance
+ * @returns an `EnvironmentProviders` which provides the {@link UIRouter} singleton instance
+ *
+ * @category Standalone
  */
 export function provideUIRouter(config: RootModule = {}): EnvironmentProviders {
   return makeEnvironmentProviders([

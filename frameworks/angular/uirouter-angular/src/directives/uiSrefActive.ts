@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
  *
  * ### Purpose
  *
- * This directive should be paired with one (or more) [[UISref]] directives.
+ * This directive should be paired with one (or more) {@link UISref} directives.
  * It will apply a CSS class to its element when the state the `uiSref` targets is activated.
  *
  * This can be used to create navigation UI where the active link is highlighted.
@@ -79,6 +79,8 @@ import { Subscription } from 'rxjs';
  *   </li>
  * </ul>
  * ```
+ *
+ * @category Components
  */
 @Directive({
   selector: '[uiSrefActive],[uiSrefActiveEq]',
