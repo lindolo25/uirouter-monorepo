@@ -19,7 +19,7 @@ const groups: ApiGroup[] = [
         name: '@uirouter/core',
         description: 'Framework-independent, state-based routing that every UI-Router package builds on.',
         versionLine: '6.x',
-        to: '/docs/api/core',
+        to: '/core/api',
       },
     ],
   },
@@ -30,7 +30,7 @@ const groups: ApiGroup[] = [
         name: '@uirouter/angular',
         description: 'State-based routing for Angular.',
         versionLine: '22.x',
-        to: '/docs/api/angular',
+        to: '/angular/api',
       },
       {
         name: '@uirouter/angularjs',
@@ -51,7 +51,7 @@ const groups: ApiGroup[] = [
         name: '@uirouter/angular-hybrid',
         description: 'Route to both AngularJS and Angular components while migrating to Angular.',
         versionLine: '22.x',
-        to: '/docs/api/angular-hybrid',
+        to: '/angular-hybrid/api',
       },
       {
         name: '@uirouter/react-hybrid',

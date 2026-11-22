@@ -4,7 +4,8 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 
-// Placeholder landing page. The framework selector is a later prototype step.
+// Home page, also the starting point for new users. The framework selector is
+// a later prototype step.
 export default function Home(): ReactNode {
   const { siteConfig } = useDocusaurusContext();
   return (
@@ -12,9 +13,14 @@ export default function Home(): ReactNode {
       <main className="container margin-vert--xl">
         <Heading as="h1">{siteConfig.title}</Heading>
         <p>{siteConfig.tagline}</p>
-        <Link className="button button--primary button--lg" to="/docs/get-started">
-          Get started
-        </Link>
+        <div className="margin-top--md">
+          <Link className="button button--primary button--lg margin-right--md" to="/about">
+            About UI-Router
+          </Link>
+          <Link className="button button--secondary button--lg" to="/docs">
+            API reference
+          </Link>
+        </div>
       </main>
     </Layout>
   );
