@@ -56,8 +56,8 @@ the state is active.
 import { useSrefActive } from '@uirouter/react';
 
 export function Nav() {
-  const hello = useSrefActive('hello', null, 'active');
-  const about = useSrefActive('about', null, 'active');
+  const hello = useSrefActive('hello', {}, 'active');
+  const about = useSrefActive('about', {}, 'active');
   return (
     <nav>
       <a {...hello}>Hello</a>
