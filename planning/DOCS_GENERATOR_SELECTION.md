@@ -228,10 +228,53 @@ workflow run, axe report, timing log).
 Observations recorded while building, to support scoring. Unscored until both
 prototypes are complete.
 
+#### Docusaurus: C1 Authoring ergonomics
+
+Scope tested: getting-started guides for Angular and React (plus short ones for
+Core and Angular Hybrid), section landing pages, and a shared partial.
+
+- **Required front matter is enforced at build time.** A
+  `markdown.parseFrontMatter` hook (`docs/plugins/frontMatter.ts`, about 60
+  lines) requires `framework`, `package`, `version_line`, and `last_verified`
+  on hand-written package pages, and checks that `package` matches the
+  package folder. A missing or malformed field fails the build with the file
+  path and every problem listed. Generated pages and general pages are
+  skipped. Docusaurus has no built-in schema for custom front matter; the hook
+  is custom code.
+- **Framework tabs** use the built-in `Tabs` component. `groupId` syncs the
+  reader's choice across the site and remembers it, which is right on general
+  pages but would show another framework's code inside a framework's own
+  guide, so the shared partial only syncs when no `framework` prop is given.
+- **Shared snippets** work as MDX partials. A `_`-prefixed file in the default
+  instance (`docs/_partials/_define-states.mdx`) is not published on its own
+  and can be imported by other instances' pages; it accepts props
+  (`framework`) to choose the default tab.
+- **Live reload and errors.** MDX errors and broken links name the source
+  file and line. The link check caught three wrong API links while the guides
+  were written (React's `UISref` is a variable and `UISrefActive` a function,
+  not classes), and a link to a renamed `.md` file.
+- **Code samples are not checked by Docusaurus.** Compiling the guides'
+  samples against the built packages (Angular with `ngc` strict templates,
+  React with `tsc` and React 19 types) found one error: the React guide passed
+  `null` as hook parameters, which strict TypeScript rejects (fixed). This
+  check used a throwaway script; it would need to become a CI job to keep
+  `last_verified` honest.
+- **Content imported from packages needs cleanup.** React's `DOCS.md` (its API
+  landing page) had an HTML block MDX cannot compile; React's changelog had
+  links without URLs (now rendered as text by the release-notes plugin).
+  Angular's README heading, with a build badge, becomes its API page title.
+  These affect both candidates.
+- **Landing pages** (`/frameworks`, `/hybrid`, `/plugins`) are short MDX pages
+  rendering package cards from one data file (`src/data/packages.ts`); version
+  lines come from each `package.json` through `customFields`. The theme
+  `Heading` component adds an anchor link to every heading, which had to be
+  avoided for card titles (C4).
+
 #### Docusaurus: C2 TypeDoc integration
 
 Scope tested: Core, Angular, and Angular Hybrid API sections, a curated menu,
-unlisted pages, and an API landing page.
+unlisted pages, and an API landing page (later replaced by section landing
+pages).
 
 - **Setup.** One `docusaurus-plugin-typedoc` entry per package, pointing TypeDoc's
   `options` at the package's existing `typedoc.json`. A small helper in
@@ -288,13 +331,19 @@ Scope tested: one docs instance per package (Core, Angular, Angular Hybrid),
 release notes from each `CHANGELOG.md`, a test "21.x" snapshot of Angular
 (removed after testing), and a simulated Core 6.1.3 release.
 
+- **Nested URLs per section.** Instance URLs are independent of instance ids
+  (`routeBasePath: 'frameworks/angular'`, `'hybrid/angular'`), so packages are
+  grouped under `/frameworks`, `/hybrid`, `/core`, and `/plugins`, with each
+  package's Getting started page at its root (`slug: /`). Snapshots would be
+  served under the package URL (`/frameworks/angular/21.x/...`).
 - **Independent version lines.** Each package is its own
   `@docusaurus/plugin-content-docs` instance holding its guides, release notes,
   and API reference, so they version together. Each instance's label comes from
   its `package.json` major (22.0.0 becomes "22.x"), so a release-tooling major
-  bump updates it. General pages (About, the API landing page) are in the
-  unversioned default instance, served from the site root so `/about`,
-  `/about/features`, and `/docs` keep the current site's URLs.
+  bump updates it. General pages (About, Features, and the section landing
+  pages) are in the unversioned default instance, served from the site root
+  so `/about` and `/about/features` keep the current site's URLs. The current
+  site's API landing URL (`/docs`) is not kept and will need a redirect.
 - **Snapshots work per package.** `docusaurus docs:version:angular 21.x` created
   `/angular/21.x/...` with an "unmaintained" banner on every page, including API
   pages; Core and Angular Hybrid were unaffected. Relative links inside a
@@ -355,11 +404,17 @@ release notes from each `CHANGELOG.md`, a test "21.x" snapshot of Angular
   directories, so CI is unaffected until a docs job is added. `syncpack lint`
   passes; its source globs do not include `docs/`. The sidebar files needed
   Docusaurus's own sidebar types to pass `tsc`.
-- **Build reliability.** Four times, a build after a failed build or a change to
-  sidebar configuration failed ("Module parse failed: Unexpected end of JSON
-  input", or "Unable to build website for locale en" after moving a sidebar
-  file) until `docusaurus clear` removed the cache or the build was rerun.
-  Relevant to C7 as well.
+- **Build reliability.** Five times, a build after a failed build, a change to
+  sidebar configuration, or building the packages failed ("Module parse
+  failed: Unexpected end of JSON input", "Unable to build website for locale
+  en", or "Client bundle compiled with errors") until `docusaurus clear`
+  removed the cache or the build was rerun unchanged. Once, a clean build
+  after changing package URLs **succeeded but produced inconsistent output**:
+  pages were written at the new URLs while the client-side site data still
+  had the old ones, so the version picker was missing on every package page.
+  An unchanged rebuild was correct. A passing build is therefore not enough
+  evidence that the output is right; deployment needs a clean build and
+  checks on the built site. Relevant to C7 and C8 as well.
 - **Theme customization.** The package-aware version picker required ejecting
   `NavbarItem/ComponentTypes` from `@docusaurus/theme-classic` (listed as a safe
   eject) to register a custom navbar item type. The ejected file is a copy of
