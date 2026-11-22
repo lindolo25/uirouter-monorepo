@@ -2,14 +2,6 @@
 
 #### State based routing for React
 
-<div style="display: flex;">
-
-<iframe style="display: inline-block;" src="https://ghbtns.com/github-btn.html?user=ui-router&repo=react&type=fork&count=true&size=medium" frameborder="0" scrolling="0" width="110px" height="20px"></iframe>
-<iframe style="display: inline-block;" src="https://ghbtns.com/github-btn.html?user=ui-router&repo=react&type=star&count=true&size=medium" frameborder="0" scrolling="0" width="110px" height="20px"></iframe>
-[![Build Status](https://travis-ci.org/ui-router/react.svg?branch=master)](https://travis-ci.org/ui-router/react)
-
-</div>
-
 UI-Router React is a client-side [Single Page Application](https://en.wikipedia.org/wiki/Single-page_application)
 routing framework for [React](https://facebook.github.io/react/).
 
