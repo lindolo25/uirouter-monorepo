@@ -1,0 +1,41 @@
+---
+title: Getting started with UI-Router Core
+sidebar_label: Getting started
+# The package's landing page: /core
+slug: /
+description: What UI-Router Core is and when to use it directly.
+framework: core
+package: '@uirouter/core'
+version_line: '6.x'
+last_verified: '6.1.2'
+---
+
+# UI-Router Core
+
+`@uirouter/core` is the framework-independent routing engine behind every
+UI-Router package. It manages states, transitions, URLs, parameters, and
+resolve data. The framework packages add the parts that depend on a framework,
+such as views and links.
+
+## Do you need to install it?
+
+Usually not. Each framework package brings Core with it, so start with the
+guide for your framework:
+
+- [UI-Router for Angular](/frameworks/angular)
+- [UI-Router for React](/frameworks/react)
+
+Install Core directly when you build an integration for another framework, or a
+plugin that works with any framework:
+
+```bash
+npm install @uirouter/core
+```
+
+## Learn more
+
+- Read about states, views, parameters, and transitions in
+  [UI-Router features](/about/features).
+- Browse the [API reference](api/index.md), starting with the
+  [`UIRouter`](api/classes/UIRouter.md) class.
+- See what changed in each release in the [release notes](release-notes.md).

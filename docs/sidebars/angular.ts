@@ -5,7 +5,6 @@ const api = typedocCategories('angular');
 
 const sidebars: SidebarsConfig = {
   main: [
-    page('index', 'Overview'),
     page('getting-started', 'Getting started'),
     page('release-notes', 'Release notes'),
     // Angular re-exports Core, and Core's tags come along with it. Angular's

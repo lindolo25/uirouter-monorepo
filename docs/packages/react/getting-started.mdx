@@ -1,0 +1,119 @@
+---
+title: Getting started with UI-Router for React
+sidebar_label: Getting started
+# The package's landing page: /frameworks/<package>
+slug: /
+description: Add UI-Router to a React application.
+framework: react
+package: '@uirouter/react'
+version_line: '1.x'
+last_verified: '1.0.8'
+---
+
+import DefineStates from '@site/docs/_partials/_define-states.mdx';
+
+# Getting started
+
+This guide adds UI-Router to a React application with two states, `hello` and
+`about`, a link to each, and a viewport that shows the active state's
+component. UI-Router for React supports React 17, 18, and 19.
+
+## Install
+
+```bash
+npm install @uirouter/react
+```
+
+`@uirouter/core` is installed with it.
+
+## Create the components
+
+Each state shows a component. These two are as small as they can be:
+
+```tsx title="Hello.tsx"
+export function Hello() {
+  return <h2>Hello world!</h2>;
+}
+```
+
+```tsx title="About.tsx"
+export function About() {
+  return <h2>About this app</h2>;
+}
+```
+
+## Define your states
+
+<DefineStates framework="react" />
+
+## Add links
+
+[`useSrefActive`](api/functions/useSrefActive.md) returns the props for a link
+to a state: its `href`, a click handler, and a class name that is set while
+the state is active.
+
+```tsx title="Nav.tsx"
+import { useSrefActive } from '@uirouter/react';
+
+export function Nav() {
+  const hello = useSrefActive('hello', null, 'active');
+  const about = useSrefActive('about', null, 'active');
+  return (
+    <nav>
+      <a {...hello}>Hello</a>
+      <a {...about}>About</a>
+    </nav>
+  );
+}
+```
+
+Hooks only work in function components. Anywhere else, such as in class
+components, wrap the link in the [`UISref`](api/variables/UISref.md) and
+[`UISrefActive`](api/functions/UISrefActive.md) components instead.
+
+## Render the router
+
+Wrap the application in [`UIRouter`](api/functions/UIRouter.md) and place a
+[`UIView`](api/classes/UIView.md) where the active state's component should
+appear:
+
+```tsx title="main.tsx"
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { pushStateLocationPlugin, UIRouter, UIRouterReact, UIView } from '@uirouter/react';
+import { Nav } from './Nav';
+import { aboutState, helloState } from './states';
+
+function configure(router: UIRouterReact) {
+  router.urlService.rules.otherwise({ state: 'hello' });
+}
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <UIRouter
+      plugins={[pushStateLocationPlugin]}
+      states={[helloState, aboutState]}
+      config={configure}
+    >
+      <Nav />
+      <UIView />
+    </UIRouter>
+  </StrictMode>,
+);
+```
+
+- `pushStateLocationPlugin` uses browser history URLs such as `/about`; your
+  server must return the application for those URLs. Use `hashLocationPlugin`
+  for URLs such as `#/about` instead.
+- `otherwise` activates the `hello` state for any URL that matches no state.
+
+Run the application: `/hello` shows the hello component, and clicking
+**About** activates the `about` state and updates the URL to `/about`.
+
+## Next steps
+
+- Read about states, views, parameters, and transitions in
+  [UI-Router features](/about/features).
+- Navigate from code with [`useRouter`](api/functions/useRouter.md) and the
+  router's `stateService`.
+- See what changed in each release in the [release notes](release-notes.md).

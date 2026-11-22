@@ -16,8 +16,8 @@ UI-Router core is framework agnostic. We provide implementations for
 AngularJS (1.x), Angular (2.0+), and React.
 
 - [AngularJS](https://ui-router.github.io/ng1)
-- [Angular (2+)](/angular)
-- [React](https://ui-router.github.io/react)
+- [Angular (2+)](/frameworks/angular)
+- [React](/frameworks/react)
 
 ## Client-side routing
 

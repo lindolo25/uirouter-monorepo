@@ -4,6 +4,7 @@ import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config, PluginConfig } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import changelogPage from './plugins/changelog';
+import { parseFrontMatter } from './plugins/frontMatter';
 
 // Prototype for the generator comparison in planning/DOCS_GENERATOR_SELECTION.md.
 // This file runs in Node.js; do not use browser APIs here.
@@ -11,14 +12,20 @@ import changelogPage from './plugins/changelog';
 // Every package gets its own docs instance (guides, release notes, and API
 // reference together), so each one is versioned on its own line.
 type PackageDocs = {
-  id: string; // instance id and URL segment
+  id: string; // instance id (tools/packages.json id)
   dir: string; // package directory, relative to the site directory
+  route?: string; // URL path of the package docs; defaults to the id
 };
 
 const packages: PackageDocs[] = [
   { id: 'core', dir: '../core' },
-  { id: 'angular', dir: '../frameworks/angular/uirouter-angular' },
-  { id: 'angular-hybrid', dir: '../frameworks/angular-hybrid/uirouter-angular-hybrid' },
+  { id: 'angular', dir: '../frameworks/angular/uirouter-angular', route: 'frameworks/angular' },
+  { id: 'react', dir: '../frameworks/react/uirouter-react', route: 'frameworks/react' },
+  {
+    id: 'angular-hybrid',
+    dir: '../frameworks/angular-hybrid/uirouter-angular-hybrid',
+    route: 'hybrid/angular',
+  },
 ];
 
 // Each package instance has one sidebar with this id.
@@ -41,6 +48,20 @@ function readPackage(pkg: PackageDocs): { name: string; version: string } {
 // "22.0.0" -> "22.x": the label of the instance's current (unreleased) docs.
 function versionLine(pkg: PackageDocs): string {
   return `${readPackage(pkg).version.split('.')[0]}.x`;
+}
+
+// Version line of every public package (tools/packages.json), for pages that
+// list packages, such as the home page and the API landing page.
+function allVersionLines(): Record<string, string> {
+  const inventory: { packages: { id: string; manifest: string }[] } = JSON.parse(
+    fs.readFileSync(path.join(__dirname, '../tools/packages.json'), 'utf8'),
+  );
+  return Object.fromEntries(
+    inventory.packages.map((p) => [
+      p.id,
+      versionLine({ id: p.id, dir: `../${path.dirname(p.manifest)}` }),
+    ]),
+  );
 }
 
 // Labels for snapshots created with `docusaurus docs:version:<id> <version>`.
@@ -81,7 +102,7 @@ function packagePlugins(pkg: PackageDocs): PluginConfig[] {
       {
         id: pkg.id,
         path: contentDir,
-        routeBasePath: pkg.id,
+        routeBasePath: pkg.route ?? pkg.id,
         sidebarPath: `./sidebars/${pkg.id}.ts`,
         // Current docs describe the released version line, not unreleased
         // work; snapshots of older lines are served under /<id>/<version>/.
@@ -115,11 +136,17 @@ const config: Config = {
     hooks: {
       onBrokenMarkdownLinks: 'throw',
     },
+    // Required front matter on hand-written package pages (plugins/frontMatter.ts).
+    parseFrontMatter,
   },
 
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
+  },
+
+  customFields: {
+    versionLines: allVersionLines(),
   },
 
   plugins: packages.flatMap(packagePlugins),
@@ -128,10 +155,10 @@ const config: Config = {
     [
       'classic',
       {
-        // Default instance: general pages linked from the navbar. Not
-        // versioned; only the About section has a sidebar. Served from the
-        // site root so pages keep their current URLs (/about,
-        // /about/features, /docs).
+        // Default instance: general pages linked from the navbar (About,
+        // Features, and the Frameworks, Hybrid, and Plugins landing pages).
+        // Not versioned; only the About section has a sidebar. Served from the
+        // site root so /about and /about/features keep their current URLs.
         docs: {
           routeBasePath: '/',
           sidebarPath: './sidebars/default.ts',
@@ -166,13 +193,16 @@ const config: Config = {
           position: 'left',
           label: 'About',
         },
+        // Section links, highlighted anywhere inside their section.
         {
-          // The API landing page, linking to each package.
-          type: 'doc',
-          docId: 'api',
+          to: '/frameworks',
+          label: 'Frameworks',
           position: 'left',
-          label: 'API',
+          activeBaseRegex: '^/frameworks(/|$)',
         },
+        { to: '/hybrid', label: 'Hybrid', position: 'left', activeBaseRegex: '^/hybrid(/|$)' },
+        { to: '/core', label: 'Core', position: 'left', activeBaseRegex: '^/core(/|$)' },
+        { to: '/plugins', label: 'Plugins', position: 'left', activeBaseRegex: '^/plugins(/|$)' },
         {
           // Version picker for the package being read; hidden elsewhere
           // (src/theme/NavbarItem/PackageVersionNavbarItem.tsx).

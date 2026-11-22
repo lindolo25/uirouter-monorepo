@@ -21,14 +21,18 @@ export default function changelogPage(context: LoadContext, pluginOptions: unkno
   const source = path.resolve(context.siteDir, options.source);
   const target = path.resolve(context.siteDir, options.target);
 
-  // Demote every heading one level so the page has a single h1 (the title).
+  // Demote every heading one level so the page has a single h1 (the title),
+  // outside code blocks.
   let inFence = false;
   const body = fs
     .readFileSync(source, 'utf8')
     .split('\n')
     .map((line) => {
       if (line.startsWith('```')) inFence = !inFence;
-      return !inFence && /^#{1,5} /.test(line) ? `#${line}` : line;
+      if (inFence) return line;
+      // Old entries have links with no URL, e.g. "[0.1.2]()"; keep the text.
+      const text = line.replace(/\[([^\]]*)\]\(\)/g, '$1');
+      return /^#{1,5} /.test(text) ? `#${text}` : text;
     })
     .join('\n');
 

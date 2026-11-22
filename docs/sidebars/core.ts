@@ -5,7 +5,7 @@ const api = typedocCategories('core');
 
 const sidebars: SidebarsConfig = {
   main: [
-    page('index', 'Overview'),
+    page('getting-started', 'Getting started'),
     page('release-notes', 'Release notes'),
     apiSection('API reference', [
       // The router entry point, listed on its own above the categories.

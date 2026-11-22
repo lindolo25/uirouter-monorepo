@@ -1,0 +1,46 @@
+---
+title: Getting started with UI-Router for hybrid Angular/AngularJS apps
+sidebar_label: Getting started
+# The package's landing page: /hybrid/angular
+slug: /
+description: Route to both AngularJS and Angular components while migrating to Angular.
+framework: angular-hybrid
+package: '@uirouter/angular-hybrid'
+version_line: '22.x'
+last_verified: '22.0.0'
+---
+
+# UI-Router for hybrid Angular/AngularJS apps
+
+`@uirouter/angular-hybrid` lets UI-Router route to both AngularJS and Angular
+components in the same application. It is for applications that run on
+AngularJS while they migrate to Angular one feature at a time, using Angular's
+`@angular/upgrade`.
+
+## Install
+
+```bash
+npm install @uirouter/angular-hybrid
+```
+
+It works together with `@angular/core`, `@angular/upgrade`,
+`@uirouter/angular`, `@uirouter/angularjs`, and `angular` (AngularJS), which
+your application declares as dependencies.
+
+## How it fits together
+
+- On the AngularJS side, add the [`ui.router.upgrade`](api/variables/upgradeModule.md)
+  module to your AngularJS application module's dependencies.
+- On the Angular side, import
+  [`UIRouterUpgradeModule.forRoot()`](api/classes/UIRouterUpgradeModule.md) in
+  the root `NgModule`, and `forChild()` in feature modules.
+- States can then use AngularJS components or templates, or Angular components.
+
+A step-by-step guide for current Angular versions is planned. Until then, the
+[package README](https://github.com/ui-router/ui-router/tree/main/frameworks/angular-hybrid/uirouter-angular-hybrid#readme)
+describes the full setup; parts of it were written for older Angular versions.
+
+## Learn more
+
+- See what changed in each release in the [release notes](release-notes.md).
+- Browse the [API reference](api/index.md).
