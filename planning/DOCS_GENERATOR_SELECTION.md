@@ -194,19 +194,19 @@ workflow run, axe report, timing log).
 
 | | Docusaurus | Starlight |
 | --- | --- | --- |
-| Generator | | |
-| Theme / plugins | | |
-| TypeDoc bridge | | |
-| Prototype branch and commit | | |
+| Generator | Docusaurus 3.10.2 (React 18.3.1) | |
+| Theme / plugins | `@docusaurus/preset-classic` 3.10.2, `typedoc-plugin-frontmatter` 1.3.3 | |
+| TypeDoc bridge | `docusaurus-plugin-typedoc` 1.4.3, `typedoc-plugin-markdown` 4.14.1, TypeDoc 0.28.20 (root pin) | |
+| Prototype branch and commit | `docs/prototype-docusaurus` (in progress) | |
 
 ### Gates
 
 | Gate | Docusaurus | Starlight |
 | --- | --- | --- |
 | G1 Static artifact deploy | | |
-| G2 One TypeDoc source | | |
-| G3 Generated files stay out of Git | | |
-| G4 Broken links fail the build | | |
+| G2 One TypeDoc source | Pass with caveat: each package's `typedoc.json` is loaded through TypeDoc's `options`. The site config still also sets content `exclude*` options; move them into each `typedoc.json` or drop them before scoring. Angular Hybrid's new `typedoc.json` is not yet in `tools/generate-api-docs.mjs`. | |
+| G3 Generated files stay out of Git | Pass: `docs/.gitignore` covers `build/`, `.docusaurus/`, and generated `docs/api/`. | |
+| G4 Broken links fail the build | Pass: `onBrokenLinks`, `onBrokenAnchors`, and `onBrokenMarkdownLinks` set to `throw`; real broken links in generated API pages failed the build (see C2 notes). | |
 | G5 Pinned, offline-capable build | | |
 
 ### Scores
@@ -222,6 +222,92 @@ workflow run, axe report, timing log).
 | C7 Build time | 5 | | | | | |
 | C8 Deployment | 5 | | | | | |
 | **Total** | **100** | | | | | |
+
+### Prototype notes
+
+Observations recorded while building, to support scoring. Unscored until both
+prototypes are complete.
+
+#### Docusaurus: C2 TypeDoc integration
+
+Scope tested: Core, Angular, and Angular Hybrid API sections, a curated menu,
+unlisted pages, and an API landing page.
+
+- **Setup.** One `docusaurus-plugin-typedoc` entry per package, pointing TypeDoc's
+  `options` at the package's existing `typedoc.json`. A small helper in
+  `docusaurus.config.ts` makes adding a package one line. TypeDoc runs inside
+  every `docusaurus build`; there is no separate generation step.
+- **MDX escaping is required.** Doc comments containing `{ }` and `< >` failed MDX
+  compilation until the markdown plugin's `sanitizeComments` output option was
+  set.
+- **Broken links surfaced real content problems.** Core uses 657 legacy
+  `[[Symbol]]` links and Angular 61; TypeDoc dropped that syntax in 0.23, so they
+  render as literal text in any generator, including the current HTML docs.
+  Two produced invalid Markdown links and failed the build (fixed in source).
+  Angular's 61 were converted to `{@link}`; five needed new targets because
+  the named symbols no longer exist (`State`, `Ng2StateDeclaration.ngModule`,
+  `UrlRouterProvider.deferIntercept`). This applies equally to both candidates.
+- **Underscore paths are dropped.** Docusaurus ignores files and folders starting
+  with `_`. A README's relative link to `CONTRIBUTING.md` (copied by TypeDoc to
+  `_media/`) broke the build until changed to an absolute URL, and
+  `_NgHybridStateDeclaration` is published as `NgHybridStateDeclaration-1`.
+- **Curated menu.** `@category` tags in source plus `categoryOrder` and
+  `defaultCategory: "Unlisted"` in `typedoc.json` shape TypeDoc's generated
+  `typedoc-sidebar.cjs`; `sidebars.ts` filters out "Unlisted", adds standalone
+  items (`UIRouter`), and composes package menus. Constraints found:
+  - Once any category exists, untagged items become one flat list (230 in
+    Core); kind groups disappear unless TypeDoc's `navigation` options are used
+    (not yet tested).
+  - Undocumented types inherit the comment, and the `@category`, of what they
+    extend or implement (`LocationPlugin`, `ServicesPlugin`,
+    `UIRouterPluginBase` followed `UIRouterPlugin`); giving them their own
+    comments fixed it.
+  - A symbol carries one category in every package that documents it. Angular
+    reads Core from source, so per-package grouping of Core symbols has to be
+    done in `sidebars.ts`.
+- **Unlisted pages.** Pages left out of the menu are still built, linked, and
+  link-checked, but Docusaurus shows no sidebar on them. `typedoc-plugin-frontmatter`
+  with `displayed_sidebar: api` fixed this for all 540 generated pages.
+- **Duplicated pages.** Angular ends `src/index.ts` with
+  `export * from '@uirouter/core'`, so its section repeats Core's API (285 pages
+  versus Core's 243). The current HTML docs have the same duplication.
+- **No links between packages.** Each package is generated separately, so
+  references to another package's types (for example Angular Hybrid to
+  `Ng2StateDeclaration`) render as plain code, producing most of Angular Hybrid's
+  18 TypeDoc warnings. `externalSymbolLinkMappings` could map them, but that puts
+  site URLs into package configuration (a G2 conflict). Unresolved.
+- **TypeDoc errors do not fail the site build.** An invalid option was logged as
+  `[error]` and the build continued. The plugin also returns without failing
+  when TypeDoc conversion produces no project (`typedoc.cjs`). A failed
+  conversion has not been tested end to end yet.
+
+#### Docusaurus: C6 Monorepo fit and maintenance
+
+- **Joins the root workspace.** `docs` is an npm workspace under the root lock.
+  Docusaurus added 794 packages, the TypeDoc bridge 3, and the frontmatter
+  plugin 2 (root lock entries 4,276 to 5,075). The first install changed about
+  51,000 lock lines, mostly npm re-marking shared packages.
+- **React version is constrained by hoisting.** With React 19.2.8 (the version
+  used by the React packages), npm hoisted Docusaurus to the root, where it
+  resolved the root's React 18.3.1 while site code used React 19: two React
+  copies. The site uses React 18.3.1 to share the hoisted copy, so its React
+  version follows whatever the root resolves. npm also kept stale nested React
+  19 lock entries after the change; a clean reinstall from the previous lock was
+  needed.
+- **One existing package changed.** Docusaurus requires `parse5@^8.1.0`, so the
+  root `parse5` moved from 8.0.1 to 8.1.1. `jsdom`, used by other packages'
+  tests, shares it (within its `^8.0.0` range).
+- **CI and tooling.** Root `build`, `test`, and `lint` scripts filter to package
+  directories, so CI is unaffected until a docs job is added. `syncpack lint`
+  passes; its source globs do not include `docs/`. `sidebars.ts` needed
+  Docusaurus's own sidebar types to pass `tsc`.
+- **Build reliability.** Three times, a build after a failed build or a change to
+  the generated sidebar failed with "Module parse failed: Unexpected end of JSON
+  input" until `docusaurus clear` removed the cache. Relevant to C7 as well.
+- **Minor.** Two built pages (`core/classes/UIRouter`, `angular/interfaces/$QLike`)
+  contain stray control characters that make tools treat the HTML as binary.
+  They are not in the generated Markdown or the source. Not investigated
+  further.
 
 ### Criteria changes after building started
 
