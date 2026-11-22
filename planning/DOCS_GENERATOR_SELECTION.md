@@ -384,6 +384,40 @@ release notes from each `CHANGELOG.md`, a test "21.x" snapshot of Angular
   rather than naming the package; changing it needs a customized theme
   component.
 
+#### Docusaurus: C5 Search
+
+Scope tested: `@easyops-cn/docusaurus-search-local` 0.55.3 over Core, Angular,
+React, and Angular Hybrid, queried in a real browser (Chromium through
+Playwright) against the built site.
+
+- **Fully local.** The index is built with the site; no external service or
+  account (G5). The plugin's optional AI widget dependency is not installed.
+  It added 17 packages, including platform-specific builds of a native
+  Chinese tokenizer (`@node-rs/jieba`).
+- **Per-package search contexts.** Each package's docs is a search context
+  (`searchContextByPaths`, generated from the package list): on a package's
+  pages results come from that package, with a link to results outside it;
+  general pages search everything. `useSrefActive` from an Angular page
+  returned no Angular results and offered results outside Angular.
+- **Spec queries.** `StateService` and `uiSref` return the matching API page
+  first, everywhere. `resolve` returns API pages first (`Resolvable`); the
+  Features page's "Resolve data" section ranks 24th of 40 pages, but first for
+  `resolve data`. The plugin has no way to rank guides above API pages.
+- **Unlisted API pages are searchable** (`StateObject`), so search supports
+  discovering pages that are not in the menu.
+- **Duplicate results.** From general pages, `StateService` shows "Class:
+  StateService" three times (Core, Angular, React copies) with no package in
+  the dropdown title. This is the Angular/React re-export duplication (C2);
+  removing it would also remove these duplicates.
+- **Index size.** About 14 MB uncompressed: 6.8 MB for the whole site plus 0.5
+  to 2.5 MB per package context, mostly API pages. A reader downloads only the
+  index for the current context.
+- **Legacy link syntax shows in results.** React's unconverted `[[...]]` links
+  appear in result snippets.
+- **Production builds only.** The index is generated after the pages are
+  built, so search does not work with the dev server (`docusaurus start`);
+  testing it needs `build` then `serve`.
+
 #### Docusaurus: C6 Monorepo fit and maintenance
 
 - **Joins the root workspace.** `docs` is an npm workspace under the root lock.
