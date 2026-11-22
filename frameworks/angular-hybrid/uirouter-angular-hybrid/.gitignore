@@ -3,6 +3,7 @@ lib
 **/_bundles
 _bundles
 dist
+_doc
 
 # artifacts
 *.d.ts
