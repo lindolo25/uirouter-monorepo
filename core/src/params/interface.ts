@@ -12,6 +12,8 @@ import { ParamType } from './paramType';
  *   folderId: 'inbox'
  * }
  * ```
+ *
+ * @category States
  */
 export interface RawParams {
   [key: string]: any;
@@ -47,6 +49,8 @@ export interface RawParams {
  *   }
  * }
  * ```
+ *
+ * @category States
  */
 export interface ParamDeclaration {
   /**
@@ -213,7 +217,7 @@ export interface ParamDeclaration {
    * $state.go('mystate', { myparam2: 'someOtherValue' });
    * ```
    *
-   * Default: If squash is not set, it uses the configured default squash policy. (See [[defaultSquashPolicy]]())
+   * Default: If squash is not set, it uses the configured default squash policy. (See {@link UrlConfig.defaultSquashPolicy})
    */
   squash?: boolean | string;
 

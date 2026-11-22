@@ -35,6 +35,8 @@ export interface ProviderLike {
  *   ],
  * }
  * ```
+ *
+ * @category States
  */
 export interface ResolvableLiteral {
   /**
