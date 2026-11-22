@@ -1,0 +1,13 @@
+{
+  "entryPoints": ["src/index.ts"],
+  "tsconfig": "tsconfig.docgen.json",
+  "name": "@uirouter/angular-hybrid",
+  "readme": "README.md",
+  "out": "_doc",
+  "excludeInternal": true,
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "skipErrorChecking": true,
+  "disableSources": true,
+  "defaultCategory": "Unlisted"
+}

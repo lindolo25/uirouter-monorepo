@@ -8,5 +8,7 @@
   "excludeExternals": true,
   "excludePrivate": true,
   "skipErrorChecking": true,
-  "disableSources": true
+  "disableSources": true,
+  "categoryOrder": ["Services", "States", "Transitions", "Plugins and debugging", "*"],
+  "defaultCategory": "Unlisted"
 }
