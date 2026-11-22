@@ -116,6 +116,31 @@ function packagePlugins(pkg: PackageDocs): PluginConfig[] {
   ];
 }
 
+// Display names for package search contexts.
+const packageLabels: Record<string, string> = {
+  core: 'Core',
+  angular: 'Angular',
+  react: 'React',
+  'angular-hybrid': 'Angular Hybrid',
+};
+
+// Local search (no external service). Every package's docs is a search
+// context: on its pages, results come from that package unless the reader
+// switches to all results. On general pages, everything is searched.
+const searchOptions = {
+  hashed: true,
+  indexBlog: false,
+  indexPages: true,
+  docsRouteBasePath: ['/', ...packages.map((pkg) => pkg.route ?? pkg.id)],
+  docsDir: ['docs', ...packages.map((pkg) => `packages/${pkg.id}`)],
+  searchContextByPaths: packages.map((pkg) => ({
+    label: packageLabels[pkg.id] ?? pkg.id,
+    path: pkg.route ?? pkg.id,
+  })),
+  useAllContextsWithNoSearchContext: true,
+  highlightSearchTermsOnTargetPage: true,
+};
+
 const config: Config = {
   title: 'UI-Router',
   tagline: 'State based routing for client-side web apps',
@@ -150,6 +175,8 @@ const config: Config = {
   },
 
   plugins: packages.flatMap(packagePlugins),
+
+  themes: [['@easyops-cn/docusaurus-search-local', searchOptions]],
 
   presets: [
     [
