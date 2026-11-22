@@ -204,8 +204,8 @@ workflow run, axe report, timing log).
 | Gate | Docusaurus | Starlight |
 | --- | --- | --- |
 | G1 Static artifact deploy | | |
-| G2 One TypeDoc source | Pass with caveat: each package's `typedoc.json` is loaded through TypeDoc's `options`. The site config still also sets content `exclude*` options; move them into each `typedoc.json` or drop them before scoring. Angular Hybrid's new `typedoc.json` is not yet in `tools/generate-api-docs.mjs`. | |
-| G3 Generated files stay out of Git | Pass: `docs/.gitignore` covers `build/`, `.docusaurus/`, and generated `docs/api/`. | |
+| G2 One TypeDoc source | Pass: each package's `typedoc.json` is loaded through TypeDoc's `options`; the site config adds only output settings (`sanitizeComments`, frontmatter). Angular Hybrid's new `typedoc.json` is also in `tools/generate-api-docs.mjs`, so CI's `docs` job (`npm run docs:verify`, 5 projects) uses the same configuration. | |
+| G3 Generated files stay out of Git | Pass for current versions: `docs/.gitignore` covers `build/`, `.docusaurus/`, and each package's generated `packages/<id>/api/` and `release-notes.md`. A version snapshot would commit generated API pages (see C3 notes). | |
 | G4 Broken links fail the build | Pass: `onBrokenLinks`, `onBrokenAnchors`, and `onBrokenMarkdownLinks` set to `throw`; real broken links in generated API pages failed the build (see C2 notes). | |
 | G5 Pinned, offline-capable build | | |
 
@@ -253,8 +253,9 @@ unlisted pages, and an API landing page.
   `_NgHybridStateDeclaration` is published as `NgHybridStateDeclaration-1`.
 - **Curated menu.** `@category` tags in source plus `categoryOrder` and
   `defaultCategory: "Unlisted"` in `typedoc.json` shape TypeDoc's generated
-  `typedoc-sidebar.cjs`; `sidebars.ts` filters out "Unlisted", adds standalone
-  items (`UIRouter`), and composes package menus. Constraints found:
+  `typedoc-sidebar.cjs`; each package's `sidebars/<id>.ts` filters out
+  "Unlisted", adds standalone items (`UIRouter`), and composes package menus.
+  Constraints found:
   - Once any category exists, untagged items become one flat list (230 in
     Core); kind groups disappear unless TypeDoc's `navigation` options are used
     (not yet tested).
@@ -264,10 +265,10 @@ unlisted pages, and an API landing page.
     comments fixed it.
   - A symbol carries one category in every package that documents it. Angular
     reads Core from source, so per-package grouping of Core symbols has to be
-    done in `sidebars.ts`.
+    done in the package's sidebar file.
 - **Unlisted pages.** Pages left out of the menu are still built, linked, and
   link-checked, but Docusaurus shows no sidebar on them. `typedoc-plugin-frontmatter`
-  with `displayed_sidebar: api` fixed this for all 540 generated pages.
+  setting `displayed_sidebar` fixed this for all 540 generated pages.
 - **Duplicated pages.** Angular ends `src/index.ts` with
   `export * from '@uirouter/core'`, so its section repeats Core's API (285 pages
   versus Core's 243). The current HTML docs have the same duplication.
@@ -280,6 +281,59 @@ unlisted pages, and an API landing page.
   `[error]` and the build continued. The plugin also returns without failing
   when TypeDoc conversion produces no project (`typedoc.cjs`). A failed
   conversion has not been tested end to end yet.
+
+#### Docusaurus: C3 Versioning
+
+Scope tested: one docs instance per package (Core, Angular, Angular Hybrid),
+release notes from each `CHANGELOG.md`, a test "21.x" snapshot of Angular
+(removed after testing), and a simulated Core 6.1.3 release.
+
+- **Independent version lines.** Each package is its own
+  `@docusaurus/plugin-content-docs` instance holding its guides, release notes,
+  and API reference, so they version together. Each instance's label comes from
+  its `package.json` major (22.0.0 becomes "22.x"), so a release-tooling major
+  bump updates it. General pages (About, the API landing page) are in the
+  unversioned default instance, served from the site root so `/about`,
+  `/about/features`, and `/docs` keep the current site's URLs.
+- **Snapshots work per package.** `docusaurus docs:version:angular 21.x` created
+  `/angular/21.x/...` with an "unmaintained" banner on every page, including API
+  pages; Core and Angular Hybrid were unaffected. Relative links inside a
+  version follow it (`/angular/21.x/api/...`).
+- **`lastVersion: 'current'` is required.** Without it, Docusaurus treated the
+  newest snapshot as the released version and moved current docs to
+  `/angular/next` with an "unreleased" banner.
+- **Release notes come from `CHANGELOG.md`.** A small local plugin
+  (`docs/plugins/changelog.ts`) regenerates each package's release-notes page
+  on every build (ignored by Git), demoting headings one level. Changelogs are
+  not valid MDX (for example `<base>` in text), so the page sets
+  `mdx: { format: md }` front matter to parse it as plain Markdown. Angular's
+  page shows 59 releases.
+- **Release scenario.** Adding a Core 6.1.3 changelog entry and bumping Core's
+  version changed exactly 1 of 838 built pages (Core's release notes). No other
+  package's pages changed and nothing site-wide was versioned.
+- **Snapshots commit generated files (G3 conflict).** A snapshot copies the
+  whole instance, including generated API pages and release notes, into
+  `angular_versioned_docs/` (288 files, 1.6 MB for one Angular version), all
+  tracked by Git. Options: accept frozen API snapshots for old majors as a
+  recorded exception, link old majors to archived API docs, or regenerate old
+  API pages from release tags (complex). Undecided.
+- **Snapshot layout is fixed.** Docusaurus always reads
+  `<id>_versioned_docs/`, `<id>_versioned_sidebars/`, and `<id>_versions.json`
+  at the site root (`plugin-content-docs/lib/versions/files.js`); a
+  `versioned_docs/<id>/` layout would need custom code. The default layout is
+  kept.
+- **Version dropdown is global by default.** The built-in dropdown is tied to
+  one instance but appears on every page (Angular's versions showed on Core
+  pages). A custom navbar item using `useActivePlugin` renders the current
+  package's dropdown and nothing on general pages (see C6 for the theme
+  customization this needed).
+- **Links to other packages are unversioned.** Links from Angular docs to Core
+  (`/core/api/...`) point at current Core in every Angular version. Correct
+  today; once Core has a second major, older framework docs would link to the
+  wrong Core version.
+- **Banner wording is generic.** It reads "documentation for UI-Router 21.x"
+  rather than naming the package; changing it needs a customized theme
+  component.
 
 #### Docusaurus: C6 Monorepo fit and maintenance
 
@@ -299,11 +353,21 @@ unlisted pages, and an API landing page.
   tests, shares it (within its `^8.0.0` range).
 - **CI and tooling.** Root `build`, `test`, and `lint` scripts filter to package
   directories, so CI is unaffected until a docs job is added. `syncpack lint`
-  passes; its source globs do not include `docs/`. `sidebars.ts` needed
+  passes; its source globs do not include `docs/`. The sidebar files needed
   Docusaurus's own sidebar types to pass `tsc`.
-- **Build reliability.** Three times, a build after a failed build or a change to
-  the generated sidebar failed with "Module parse failed: Unexpected end of JSON
-  input" until `docusaurus clear` removed the cache. Relevant to C7 as well.
+- **Build reliability.** Four times, a build after a failed build or a change to
+  sidebar configuration failed ("Module parse failed: Unexpected end of JSON
+  input", or "Unable to build website for locale en" after moving a sidebar
+  file) until `docusaurus clear` removed the cache or the build was rerun.
+  Relevant to C7 as well.
+- **Theme customization.** The package-aware version picker required ejecting
+  `NavbarItem/ComponentTypes` from `@docusaurus/theme-classic` (listed as a safe
+  eject) to register a custom navbar item type. The ejected file is a copy of
+  the theme's mapping and must be compared with the theme on each Docusaurus
+  upgrade. Custom navbar item types also skip Docusaurus's config validation,
+  so defaults the built-in item expects (`dropdownItemsBefore` and others) had
+  to be set in the component; without them every package page failed to
+  render.
 - **Minor.** Two built pages (`core/classes/UIRouter`, `angular/interfaces/$QLike`)
   contain stray control characters that make tools treat the HTML as binary.
   They are not in the generated Markdown or the source. Not investigated
