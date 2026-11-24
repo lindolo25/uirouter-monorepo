@@ -3,7 +3,7 @@
 Status: proposed implementation plan, 2026-09-28.
 Starting point: main at `6fa0eaeaf` (migration cleanup PR #45 merged).
 
-Progress: the [initial compatibility check](RELEASE_PLEASE_COMPATIBILITY.md) passed local independent-release and root-lock regeneration experiments. Bootstrap version inventory is recorded; initial history selection and live bot behavior remain to be verified. Dependency ranges are next.
+Progress: the [initial compatibility check](RELEASE_PLEASE_COMPATIBILITY.md) passed local independent-release and root-lock regeneration experiments. The dependency-range changes and minimum-version tests landed in PR #47. Draft release-PR automation is now prepared; see [setup instructions](RELEASE_PLEASE_SETUP.md). Initial release notes, live bot behavior, and publication remain to be verified.
 
 ## Agreed experience
 
@@ -108,11 +108,17 @@ Before activation, inspect main-branch protection/rulesets and who can modify th
 
 The Node strategy normally updates package-local lockfiles. Our public workspaces share a root `package-lock.json`; do not assume native manifest mode updates it correctly. In a disposable checkout, generate separate React and Angular release proposals and check their diffs and clean installs.
 
-Prefer supported configuration if it can maintain the shared lock correctly. Otherwise use one small lock-refresh step on the bot's own release branches: run the pinned npm's `install --package-lock-only --ignore-scripts --no-audit --no-fund`, commit only the intended root-lock changes, then let ordinary CI validate the resulting PR head. Avoid workflow loops and stale check results. Do not enable the dependency-cascading workspace plugin solely to obtain lock updates. A hand-edited workspace version entry alone is insufficient when dependency resolution changes.
+Use RP's built-in `extra-files` JSON updater to change only the selected package's
+version entry in the root lock. This replaces the initially proposed custom
+lock-refresh step. Compatible patch bumps for all twelve packages were checked
+against npm regeneration after loosening the private Angular Hybrid example's Rx
+pin. Dependency changes still regenerate the lock in their ordinary code PR;
+major releases outside existing ranges need explicit dependency/lock review.
+Keep the workspace plugin disabled to avoid automatic dependent bumps.
 
 Confirm that merging one release PR causes the other to refresh cleanly, including the shared Release Please manifest and root lock. Unexpected dependency graph drift must be reviewed before merging.
 
-Bootstrap from actual npm publication state and existing package tags, not blindly from current package.json versions. Some current versions/notes may already be published or may describe pending work. Specifically recheck the previously observed published React Hybrid 3.0.0. Preserve authored breaking-change notes. Choose the initial history boundary deliberately so pending changes are included without replaying the entire imported history. Record the resulting per-package bootstrap choices in the implementation PR.
+Bootstrap from actual npm publication state and existing package tags, not blindly from current package.json versions. Merge the separate React Hybrid 3.0.0 history restoration in [PR #49](https://github.com/ui-router/ui-router/pull/49) before #48 so all twelve baseline tags are reachable. Use the normal per-package tag boundaries without a shared history cutoff; the configured 5,000-commit search reaches the oldest imported baseline tags. Some current notes may already be published or may describe pending work, so review the proposals and preserve authored breaking-change notes. Tag provenance belongs to #49; record the resulting proposals with the release-tooling work.
 
 ## Failure and retry behavior
 
@@ -126,7 +132,7 @@ Check registry state before retrying. Publish only missing package/version ident
 
 1. **Compatibility check and bootstrap design.** Exercise native separate PRs, tag format/history, root-lock updates, and pending React versus Angular using disposable fixtures or local simulations. Resolve the lock approach before implementing production publication.
 2. **Dependency ranges.** Make the reviewed Core/internal-range changes with lock regeneration and focused minimum-version consumer tests. Keep these changes separate from workflow behavior for review.
-3. **Release PR automation.** Add pinned Release Please configuration and the GitHub App integration. Keep npm publication explicitly disabled while validating real bot PRs and their CI. Creating live release tags remains disabled until the bootstrap is reviewed.
+3. **Release PR automation.** Add pinned Release Please configuration, built-in root-lock version updates, and the GitHub App integration. Keep npm publication explicitly disabled while validating real bot PRs and their CI. Creating live release tags remains disabled until the bootstrap is reviewed.
 4. **Publisher and recovery.** Implement same-workflow selection, builds/checks, OIDC, legacy dual publishing, retry, and optional manual previews from `main`. Reuse the same publisher. Complete the non-publishing validation above; dry runs do not prove live OIDC authentication.
 5. **Activate deliberately.** Present exact npm/GitHub setup and proposed first package/version, choosing a useful preview or the first intended stable release. After maintainer approval, configure trust and enable that first real publication. Verify npm contents/provenance and install the published package. Then enable the remaining configured packages without an extra approval in their routine merge-to-publish flow.
 6. **Finish documentation and retire overlaps.** Document the normal release-PR flow, optional previews from trunk, dry-run limits, range changes, failed-publish recovery, and the status of the manual fallback. Update the post-migration program to make this the active P04 release direction.
