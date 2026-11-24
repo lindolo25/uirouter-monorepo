@@ -118,7 +118,7 @@ Keep the workspace plugin disabled to avoid automatic dependent bumps.
 
 Confirm that merging one release PR causes the other to refresh cleanly, including the shared Release Please manifest and root lock. Unexpected dependency graph drift must be reviewed before merging.
 
-Bootstrap from actual npm publication state and existing package tags, not blindly from current package.json versions. Some current versions/notes may already be published or may describe pending work. Specifically recheck the previously observed published React Hybrid 3.0.0. Preserve authored breaking-change notes. Choose the initial history boundary deliberately so pending changes are included without replaying the entire imported history. Record the resulting per-package bootstrap choices in the implementation PR.
+Bootstrap from actual npm publication state and existing package tags, not blindly from current package.json versions. All twelve baseline versions now have matching namespaced tags, including the restored upstream React Hybrid 3.0.0 release. Use the normal per-package tag boundaries without a shared history cutoff; the configured 5,000-commit search reaches the oldest imported baseline tags. Some current notes may already be published or may describe pending work, so review the proposals and preserve authored breaking-change notes. Record the tag provenance and resulting proposals in the implementation PR.
 
 ## Failure and retry behavior
 

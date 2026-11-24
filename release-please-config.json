@@ -7,7 +7,7 @@
   "pull-request-title-pattern": "Release${component} ${version} ${scope}",
   "include-v-in-tag": false,
   "tag-separator": "@",
-  "last-release-sha": "cb80720b8f0ceff309913f00a9dac147fa03752f",
+  "commit-search-depth": 5000,
   "pull-request-header": "This is a draft release proposal while we set up Release Please. Review the initial version and changelog before marking it ready. Tag creation and npm publishing are disabled.",
   "packages": {
     "core": {

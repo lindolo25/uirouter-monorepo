@@ -9,6 +9,12 @@ independent compatible version bumps after the remaining exact example pin is
 removed. This supersedes the custom lock-refresh recommendation below; see
 [the current setup](RELEASE_PLEASE_SETUP.md#how-the-shared-lock-is-updated).
 
+Update on November 24, 2026: the late upstream React Hybrid 3.0.0 tag was restored
+using the original history-import mapping. All twelve baseline tags now exist.
+Release Please uses their normal release boundaries with a 5,000-commit search
+depth; the shared history-import cutoff has been removed. The registry table and
+proposal experiments below record the original September inspection.
+
 ## Initial results and implementation decisions
 
 - **Independent releases work in the local simulation.** Using the real RP
@@ -55,9 +61,10 @@ versions, not new release candidates.
 | visualizer | 7.2.1 | yes |
 | publish-scripts | 2.8.0 | yes |
 
-React Hybrid 3.0.0 must seed its manifest entry even though its latest imported
-release tag is 2.0.0. Do not invent a release tag at an unrelated monorepo SHA
-or propose 3.0.0 again. The legacy `angular-ui-router` identity still needs its
+The React Hybrid 3.0.0 tag was absent at this inspection. It has since been
+restored at the rewritten upstream release commit, rather than an unrelated
+monorepo SHA; see the [current setup](RELEASE_PLEASE_SETUP.md#review-the-first-proposals).
+The legacy `angular-ui-router` identity still needs its
 own registry/trust check before enabling dual publication. Registry state must
 be refreshed before activation.
 
@@ -71,12 +78,11 @@ work, React 16 retirement, and candidate tooling that has since been removed.
 
 Those are experimental proposals, not approved next versions. Commit titles
 alone cannot produce an accurate initial release summary from the migration
-history. Before activating RP, choose a reviewed history boundary and explicitly
-carry forward genuine unpublished changes and authored breaking-change notes.
-Compare against published package contents where necessary; do not silently
-skip pending changes by choosing today's main as the boundary. Verify how the
-chosen boundary interacts with existing per-package tags: `bootstrap-sha` alone
-is not a universal override for packages whose release tags are already found.
+history. The current setup uses the published per-package tags as its boundaries.
+Before activation, compare generated notes against published package contents
+where necessary and preserve genuine unpublished changes and authored
+breaking-change notes. The earlier shared-cutoff and bootstrap experiments are
+historical; neither override is used by the current configuration.
 
 ## Limits and next steps
 
