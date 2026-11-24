@@ -23,4 +23,5 @@ test('release configuration covers only the public package inventory', () => {
   assert.equal(config['separate-pull-requests'], true);
   assert.equal(config['include-v-in-tag'], false);
   assert.equal(config['release-type'], 'node');
+  assert.deepEqual(config['exclude-paths'], []);
 });
