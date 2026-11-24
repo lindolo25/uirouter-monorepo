@@ -48,15 +48,11 @@ The initial history scan can require thousands of read requests. The job has a
 still needs validation when proposals are enabled; credential setup does not
 enable the workflow.
 
-The late upstream React Hybrid 3.0.0 release was restored on November 24, 2026.
-Its original release commit, `2779bd13aeae470276812d187214e03486e4d9da`, maps to
-`6ad064064b94b4d9f8364a8d22e142d4bd161ef1` under the original import prefix
-`framework/react-hybrid/router`. The tag `react-hybrid@3.0.0` points to that
-rewritten commit. Its three late upstream commits extend the existing imported
-history; the ancestry merge preserves the current monorepo source, which already
-contains the React 16 retirement from PR #32 and later tooling changes.
-Merge PR #48 with a normal merge commit so the restored tag remains reachable
-from `main`. Squashing or rebasing this PR would discard the imported ancestry.
+The late upstream React Hybrid 3.0.0 history is restored separately in
+[PR #49](https://github.com/ui-router/ui-router/pull/49), which includes its tag
+provenance and validation. Merge #49 with a normal merge commit before #48 so
+`react-hybrid@3.0.0` is reachable from `main`. PR #48 contains release tooling;
+the imported commits and ancestry merge belong only to #49.
 
 Before the tag restoration, a read-only run of the exact library bundled in our
 pinned action (Release Please 17.3.0) against GitHub main at `d1d9d5422` generated
@@ -78,16 +74,11 @@ compare the proposed notes with genuine unpublished changes and already publishe
 packages, preserving authored breaking-change notes. Change the
 setup-only draft/header settings as part of that reviewed activation.
 
-The restoration was checked against the original commit map: reconstructing the
-existing 2.0.0 tag and imported source head reproduced their recorded hashes,
-then the three late upstream commits were mapped onto that ancestry. The
-restored release tree matches upstream 3.0.0 under the historical prefix, and the
-ancestry merge leaves the current source tree unchanged.
-
-Release Please 17.3.0 resolves all twelve baseline tags, including the restored
-3.0.0 tag. A local full-history simulation builds twelve draft proposals without
-the shared cutoff. A 500-commit simulation produces different notes and versions,
-so it is not a substitute for the full search. These remain unapproved proposals.
+With #49's restored ancestry, Release Please 17.3.0 resolves all twelve baseline
+tags, including the restored 3.0.0 tag. A local full-history simulation builds
+twelve draft proposals without the shared cutoff. A 500-commit simulation
+produces different notes and versions, so it is not a substitute for the full
+search. These remain unapproved proposals.
 The read-only GitHub-backed full-history preview hit a gateway timeout; hosted
 generation and actual App authentication still need validation while publishing
 remains disabled. None of these checks enabled the bot or created release PRs.

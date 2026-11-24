@@ -9,11 +9,12 @@ independent compatible version bumps after the remaining exact example pin is
 removed. This supersedes the custom lock-refresh recommendation below; see
 [the current setup](RELEASE_PLEASE_SETUP.md#how-the-shared-lock-is-updated).
 
-Update on November 24, 2026: the late upstream React Hybrid 3.0.0 tag was restored
-using the original history-import mapping. All twelve baseline tags now exist.
-Release Please uses their normal release boundaries with a 5,000-commit search
-depth; the shared history-import cutoff has been removed. The registry table and
-proposal experiments below record the original September inspection.
+Update on November 24, 2026: [PR #49](https://github.com/ui-router/ui-router/pull/49)
+restores the late upstream React Hybrid 3.0.0 tag's ancestry separately. Merge it
+before #48. Release Please then uses the twelve packages' normal release
+boundaries with a 5,000-commit search depth; the shared history-import cutoff has
+been removed. The registry table and proposal experiments below record the
+original September inspection.
 
 ## Initial results and implementation decisions
 
