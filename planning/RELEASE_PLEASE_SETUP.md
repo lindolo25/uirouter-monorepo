@@ -83,6 +83,54 @@ The read-only GitHub-backed full-history preview hit a gateway timeout; hosted
 generation and actual App authentication still need validation while publishing
 remains disabled. None of these checks enabled the bot or created release PRs.
 
+### Imported empty commits and package attribution
+
+The first hosted run on November 24 succeeded in 28 minutes and opened twelve
+draft PRs (#50–#61). App authentication, branch writes, labels and PR-triggered CI
+worked. The proposals exposed an attribution issue: some imported commits have
+the same tree as their parent, so GitHub correctly reports no changed files.
+Release Please 17.3.0 intentionally applies empty commits to every package. For
+example, the empty imported Angular 9–10 commit `8a2d6500` appeared in React's
+notes and incorrectly caused a major bump. Empty DSR and Visualizer commits also
+appeared in unrelated proposals.
+
+The explicit top-level `"exclude-paths": []` enables Release Please 17.3.0's
+per-package path filter. With no exclusion patterns it retains every commit that
+touches a file in that package, while discarding commits with no matching files.
+Filtering runs after release-tag boundary detection, so empty tagged commits
+still serve as boundaries. No commits or tags are rewritten, and no shared
+history cutoff or forced release version is added.
+
+This is version-specific behavior of the pinned library, rather than a dedicated
+`include-empty` configuration option. CI exercises the actual 17.3.0 manifest
+implementation with empty imported commits, empty `Release-As` commits, genuine
+breaking changes, multi-package changes and distinct empty tag boundaries. Keep
+those tests passing when changing the action/library version. An intentional
+release instruction must change a file in its package; empty commits no longer
+request releases for every package.
+
+A full 5,000-commit simulation with this filter proposes Core 6.1.3, Angular
+22.0.1, AngularJS 1.2.0, React 1.0.9, React Hybrid 3.1.0, DSR 1.3.0, Redux 1.1.0,
+Sticky States 1.6.0 and Publish Scripts 2.9.0. Angular Hybrid, Rx and Visualizer
+have no remaining release candidates. These versions and notes still need
+maintainer review, especially React Hybrid's React 16 retirement. Other notes
+reflect real changes to package tooling or examples rather than routing APIs;
+this filter addresses incorrect package attribution, not editorial release-note
+selection.
+
+Keep all existing release PRs as drafts while reviewing this correction. Once it
+lands on `main`, the bot can refresh the nine remaining proposals. Release Please
+does not automatically close old proposals that no longer have a candidate, so
+the Angular Hybrid, Rx and Visualizer drafts require separate cleanup.
+
+To run the library regression checks locally without changing workspace
+dependencies:
+
+```sh
+npm install --prefix /tmp/ui-router-release-please-tests --no-save --package-lock=false --ignore-scripts --no-audit --no-fund release-please@17.3.0
+NODE_PATH=/tmp/ui-router-release-please-tests/node_modules node --test tools/test-release-please.mjs tools/test-release-please-history.mjs
+```
+
 ## How the shared lock is updated
 
 Each package's `extra-files` setting tells Release Please to update that package's
