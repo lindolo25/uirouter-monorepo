@@ -15,6 +15,8 @@ import { isDefined, isString } from '../common';
  * `https://example.com:443/basepath/state/substate?param1=a#hashvalue`;
  *
  * This API is found at `router.urlService.config` (see: [[UIRouter.urlService]], [[URLService.config]])
+ *
+ * @category Services
  */
 export class UrlConfig implements Disposable {
   /** @internal */ paramTypes = new ParamTypes();

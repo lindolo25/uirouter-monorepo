@@ -12,6 +12,8 @@ import { RegisteredHook } from './hookRegistry';
  *
  * It is passed as the third argument to [[StateService.go]], [[StateService.transitionTo]].
  * It can also be used with a `uiSref`.
+ *
+ * @category Transitions
  */
 export interface TransitionOptions {
   /**
@@ -205,6 +207,7 @@ export type IHookRegistration = (
  *
  * @returns a [[HookResult]] which may alter the transition
  *
+ * @category Transitions
  */
 export interface TransitionHookFn {
   (transition: Transition): HookResult;
@@ -230,6 +233,8 @@ export interface TransitionHookFn {
  * @param injector (for ng1 or ng2 only) the injector service
  *
  * @returns a [[HookResult]] which may alter the transition
+ *
+ * @category Transitions
  */
 export interface TransitionStateHookFn {
   (transition: Transition, state: StateDeclaration): HookResult;
@@ -267,6 +272,8 @@ export type HookResult = boolean | TargetState | void | Promise<boolean | Target
 
 /**
  * These options may be provided when registering a Transition Hook (such as `onStart`)
+ *
+ * @category Transitions
  */
 export interface HookRegOptions {
   /**
@@ -791,6 +798,8 @@ export type IStateMatch = PredicateBinary<StateObject, Transition>;
  *   exiting: 'parent.child'
  * }
  * ```
+ *
+ * @category Transitions
  */
 export interface HookMatchCriteria {
   [key: string]: HookMatchCriterion | undefined;

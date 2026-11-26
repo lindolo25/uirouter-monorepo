@@ -111,6 +111,8 @@ export interface TransitionServicePluginAPI {
  * At bootstrap, [[UIRouter]] creates a single instance (singleton) of this class.
  *
  * This API is located at `router.transitionService` ([[UIRouter.transitionService]])
+ *
+ * @category Services
  */
 export class TransitionService implements IHookRegistry, Disposable {
   /** @internal */

@@ -24,7 +24,8 @@
     "plugins/*/examples/*",
     "frameworks/*/uirouter-*",
     "frameworks/*/examples/*",
-    "tools/*"
+    "tools/*",
+    "docs"
   ],
   "scripts": {
     "build": "turbo run build --filter='./core' --filter='./frameworks/*/uirouter-*' --filter='./plugins/*'",

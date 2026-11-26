@@ -23,6 +23,8 @@ export type StateRegistryListener = (event: 'registered' | 'deregistered', state
  * A registry for all of the application's [[StateDeclaration]]s
  *
  * This API is found at `router.stateRegistry` ([[UIRouter.stateRegistry]])
+ *
+ * @category Services
  */
 export class StateRegistry {
   private _root: StateObject;

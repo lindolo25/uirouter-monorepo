@@ -42,8 +42,9 @@ export interface ViewSyncListener {
  * - As `ui-view` components pop in and out of existence, they register themselves using [[registerUIView]].
  *
  * - When the [[sync]] function is called, the registered `ui-view`(s) ([[ActiveUIView]])
- * are configured with the matching [[ViewConfig]](s)
+ * are configured with the matching {@link ViewConfig}(s)
  *
+ * @category Services
  */
 export class ViewService {
   /** @internal */ private _uiViews: ActiveUIView[] = [];

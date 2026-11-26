@@ -4,6 +4,7 @@
   "scripts": {
     "clean": "shx rm -rf lib _bundles dist",
     "build": "npm run clean && ng-packagr -p ng-package.json",
+    "docs": "node ../../../tools/generate-api-docs.mjs --project angular-hybrid",
     "pack": "node ../../../tools/pack-package.mjs",
     "release": "release --deps @uirouter/core @uirouter/angular @uirouter/angularjs",
     "test:downstream": "npm run build && test_downstream_projects",

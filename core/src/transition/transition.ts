@@ -44,6 +44,8 @@ const stateSelf: (_state: StateObject) => StateDeclaration = prop('self');
  *
  * This object contains all contextual information about the to/from states, parameters, resolves.
  * It has information about all states being entered and exited as a result of the transition.
+ *
+ * @category Transitions
  */
 export class Transition implements IHookRegistry {
   /** @internal */

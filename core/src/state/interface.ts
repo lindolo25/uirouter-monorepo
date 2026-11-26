@@ -14,6 +14,11 @@ export interface TransitionPromise extends Promise<StateObject> {
   transition: Transition;
 }
 
+/**
+ * A plain object describing a target state: the state, its parameters, and transition options.
+ *
+ * @category States
+ */
 export interface TargetStateDef {
   state: StateOrName;
   params?: RawParams;
@@ -98,6 +103,8 @@ export type RedirectToResult = string | TargetState | { state?: string; params?:
  *
  * registry.register(foldersState);
  * ```
+ *
+ * @category States
  */
 export interface StateDeclaration {
   /**
@@ -689,6 +696,8 @@ export interface StateDeclaration {
  * If your state has a `lazyLoad` function, it should return a promise.
  * If promise resolves to an object matching this interface, then the `states` array
  * of [[StateDeclaration]] objects will be automatically registered.
+ *
+ * @category States
  */
 export interface LazyLoadResult {
   states?: StateDeclaration[];

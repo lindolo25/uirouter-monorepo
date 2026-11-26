@@ -14,7 +14,7 @@
  * import {StateRegistry} from "@uirouter/angular";
  * ```
  *
- * - Create application states (as defined by [[Ng2StateDeclaration]]).
+ * - Create application states (as defined by {@link Ng2StateDeclaration}).
  *
  * ```js
  * export let state1: Ng2StateDeclaration = {
@@ -30,7 +30,7 @@
  * }
  * ```
  *
- * - Import a [[UIRouterModule.forChild]] module into your feature `NgModule`s.
+ * - Import a {@link UIRouterModule.forChild} module into your feature `NgModule`s.
  *
  * ```js
  * @ NgModule({
@@ -46,8 +46,8 @@
  * export class MyFeatureModule {}
  * ```
  *
- * - Import a [[UIRouterModule.forRoot]] module into your application root `NgModule`
- * - Either bootstrap a [[UIView]] component, or add a `<ui-view></ui-view>` viewport to your root component.
+ * - Import a {@link UIRouterModule.forRoot} module into your application root `NgModule`
+ * - Either bootstrap a {@link UIView} component, or add a `<ui-view></ui-view>` viewport to your root component.
  *
  * ```js
  * @ NgModule({
@@ -66,9 +66,9 @@
  * browserPlatformDynamic.bootstrapModule(RootAppModule);
  * ```
  *
- * - Optionally specify a configuration class [[ChildModule.configClass]] for any module
+ * - Optionally specify a configuration class {@link ChildModule.configClass} for any module
  * to perform any router configuration during bootstrap or lazyload.
- * Pass the class to [[UIRouterModule.forRoot]] or [[UIRouterModule.forChild]].
+ * Pass the class to {@link UIRouterModule.forRoot} or {@link UIRouterModule.forChild}.
  *
  * ```js
  * import {UIRouter} from "@uirouter/angular";
@@ -236,6 +236,6 @@ export const _UIROUTER_SERVICE_PROVIDERS: Provider[] = [
 /**
  * The UI-Router providers, for use in your application bootstrap
  *
- * @deprecated use [[UIRouterModule.forRoot]]
+ * @deprecated use {@link UIRouterModule.forRoot}
  */
 export const UIROUTER_PROVIDERS: Provider[] = _UIROUTER_INSTANCE_PROVIDERS.concat(_UIROUTER_SERVICE_PROVIDERS);

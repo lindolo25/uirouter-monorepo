@@ -92,6 +92,8 @@ const transLbl = (trans) => `Transition #${_tid(trans)}-${_rid(trans)}`;
 
 /**
  * Prints UI-Router Transition trace information to the console.
+ *
+ * @category Plugins and debugging
  */
 export class Trace {
   /** @internal */

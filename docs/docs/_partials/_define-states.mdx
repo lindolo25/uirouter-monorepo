@@ -1,0 +1,62 @@
+{/*
+  Shared "Define your states" section, used by the framework getting-started
+  guides. Pass `framework` to open that framework's tab; without it (on general
+  pages) the tabs follow the reader's framework choice across the site.
+*/}
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+A state is one place in your application. It has a `name`, the `url`
+fragment that activates it, and the `component` to show while it is active.
+States form a tree: a state named `about.team` is a child of `about`.
+
+This example defines two states, `hello` and `about`:
+
+<Tabs
+  groupId={props.framework ? undefined : 'framework'}
+  defaultValue={props.framework ?? 'angular'}
+>
+<TabItem value="angular" label="Angular">
+
+```ts title="app.states.ts"
+import { Ng2StateDeclaration } from '@uirouter/angular';
+import { AboutComponent } from './about.component';
+import { HelloComponent } from './hello.component';
+
+export const helloState: Ng2StateDeclaration = {
+  name: 'hello',
+  url: '/hello',
+  component: HelloComponent,
+};
+
+export const aboutState: Ng2StateDeclaration = {
+  name: 'about',
+  url: '/about',
+  component: AboutComponent,
+};
+```
+
+</TabItem>
+<TabItem value="react" label="React">
+
+```tsx title="states.ts"
+import { ReactStateDeclaration } from '@uirouter/react';
+import { About } from './About';
+import { Hello } from './Hello';
+
+export const helloState: ReactStateDeclaration = {
+  name: 'hello',
+  url: '/hello',
+  component: Hello,
+};
+
+export const aboutState: ReactStateDeclaration = {
+  name: 'about',
+  url: '/about',
+  component: About,
+};
+```
+
+</TabItem>
+</Tabs>

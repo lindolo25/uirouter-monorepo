@@ -31,9 +31,9 @@ export type ModuleTypeCallback<T = unknown> = () => Type<T> | Promise<Type<T>>;
 /**
  * Returns a function which lazy loads a nested module
  *
- * This is primarily used by the [[ng2LazyLoadBuilder]] when processing [[Ng2StateDeclaration.loadChildren]].
+ * This is primarily used by the {@link ng2LazyLoadBuilder} when processing {@link Ng2StateDeclaration.loadChildren}.
  *
- * It could also be used manually as a [[StateDeclaration.lazyLoad]] property to lazy load an `NgModule` and its state(s).
+ * It could also be used manually as a {@link StateDeclaration.lazyLoad} property to lazy load an `NgModule` and its state(s).
  *
  * #### Example:
  * ```ts

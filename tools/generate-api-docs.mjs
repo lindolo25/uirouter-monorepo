@@ -29,6 +29,11 @@ const projects = [
     directory: "frameworks/angular/uirouter-angular",
   },
   {
+    id: "angular-hybrid",
+    package: "@uirouter/angular-hybrid",
+    directory: "frameworks/angular-hybrid/uirouter-angular-hybrid",
+  },
+  {
     id: "angularjs",
     package: "@uirouter/angularjs",
     directory: "frameworks/angularjs/uirouter-angularjs",

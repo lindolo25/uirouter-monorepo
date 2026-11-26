@@ -54,12 +54,14 @@ export function locationStrategy(useHash) {
  * ### UIRouter Directives
  *
  * When a UI-Router Module is imported into a `NgModule`, that module's components
- * can use the UIRouter Directives such as [[UIView]], [[UISref]], [[UISrefActive]].
+ * can use the UIRouter Directives such as {@link UIView}, {@link UISref}, {@link UISrefActive}.
  *
  * ### State Definitions
  *
  * State definitions found in the `states:` property are provided to the Dependency Injector.
- * This enables UI-Router to automatically register the states with the [[StateRegistry]] at bootstrap (and during lazy load).
+ * This enables UI-Router to automatically register the states with the {@link StateRegistry} at bootstrap (and during lazy load).
+ *
+ * @category UIRouter
  */
 @NgModule({
   imports: [_UIROUTER_DIRECTIVES],
@@ -74,9 +76,9 @@ export class UIRouterModule {
    *
    * The `forRoot` module should be added to the `imports:` of the `NgModule` being bootstrapped.
    * An application should only create and import a single `NgModule` using `forRoot()`.
-   * All other modules should be created using [[UIRouterModule.forChild]].
+   * All other modules should be created using {@link UIRouterModule.forChild}.
    *
-   * Unlike `forChild`, an `NgModule` returned by this factory provides the [[UIRouter]] singleton object.
+   * Unlike `forChild`, an `NgModule` returned by this factory provides the {@link UIRouter} singleton object.
    * This factory also accepts root-level router configuration.
    * These are the only differences between `forRoot` and `forChild`.
    *
@@ -100,7 +102,7 @@ export class UIRouterModule {
    * ```
    *
    * @param config declarative UI-Router configuration
-   * @returns an `NgModule` which provides the [[UIRouter]] singleton instance
+   * @returns an `NgModule` which provides the {@link UIRouter} singleton instance
    */
   static forRoot(config: RootModule = {}): ModuleWithProviders<UIRouterModule> {
     return {
@@ -147,7 +149,7 @@ export class UIRouterModule {
 }
 
 /**
- * UI-Router declarative configuration which can be provided to [[UIRouterModule.forRoot]]
+ * UI-Router declarative configuration which can be provided to {@link UIRouterModule.forRoot}
  */
 export interface RootModule extends StatesModule {
   /**
@@ -166,7 +168,7 @@ export interface RootModule extends StatesModule {
   /**
    * Configures the `otherwise` rule, which chooses the state or URL to activate when no other routes matched.
    *
-   * See: [[UrlRulesApi.otherwise]].
+   * See: {@link UrlRulesApi.otherwise}.
    */
   otherwise?: string | UrlRuleHandlerFn | TargetState | TargetStateDef;
 
@@ -174,12 +176,12 @@ export interface RootModule extends StatesModule {
    * Configures the `initial` rule, which chooses the state or URL to activate when the
    * application initially starts, and no other routes matched.
    *
-   * See: [[UrlRulesApi.initial]].
+   * See: {@link UrlRulesApi.initial}.
    */
   initial?: string | UrlRuleHandlerFn | TargetState | TargetStateDef;
 
   /**
-   * Sets [[UrlRouterProvider.deferIntercept]]
+   * Sets {@link UrlService.deferIntercept}
    */
   deferIntercept?: boolean;
 
@@ -196,13 +198,13 @@ export interface RootModule extends StatesModule {
 }
 
 /**
- * UI-Router Module declarative configuration which can be passed to [[UIRouterModule.forChild]]
+ * UI-Router Module declarative configuration which can be passed to {@link UIRouterModule.forChild}
  */
 export interface StatesModule {
   /**
    * The module's UI-Router states
    *
-   * This list of [[Ng2StateDeclaration]] objects will be registered with the [[StateRegistry]].
+   * This list of {@link Ng2StateDeclaration} objects will be registered with the {@link StateRegistry}.
    */
   states?: Ng2StateDeclaration[];
 

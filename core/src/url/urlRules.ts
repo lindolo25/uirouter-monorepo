@@ -65,6 +65,8 @@ function getHandlerFn(handler: string | UrlRuleHandlerFn | TargetState | TargetS
  * The most commonly used methods are [[otherwise]] and [[when]].
  *
  * This API is found at `router.urlService.rules` (see: [[UIRouter.urlService]], [[URLService.rules]])
+ *
+ * @category Services
  */
 export class UrlRules implements Disposable {
   /** used to create [[UrlRule]] objects for common cases */

@@ -1,0 +1,120 @@
+---
+title: Getting started with UI-Router for Angular
+sidebar_label: Getting started
+# The package's landing page: /frameworks/<package>
+slug: /
+description: Add UI-Router to a standalone Angular application.
+framework: angular
+package: '@uirouter/angular'
+version_line: '22.x'
+last_verified: '22.0.0'
+---
+
+import DefineStates from '@site/docs/_partials/_define-states.mdx';
+
+# Getting started
+
+This guide adds UI-Router to a standalone Angular application with two states,
+`hello` and `about`, a link to each, and a viewport that shows the active
+state's component.
+
+## Install
+
+```bash
+npm install @uirouter/angular
+```
+
+`@uirouter/angular` needs `@uirouter/core` and `@uirouter/rx` as peer
+dependencies; npm 7 and later installs them automatically.
+
+## Create the components
+
+Each state shows a component. These two are as small as they can be:
+
+```ts title="hello.component.ts"
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-hello',
+  template: `<h2>Hello world!</h2>`,
+})
+export class HelloComponent {}
+```
+
+```ts title="about.component.ts"
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-about',
+  template: `<h2>About this app</h2>`,
+})
+export class AboutComponent {}
+```
+
+## Define your states
+
+<DefineStates framework="angular" />
+
+## Provide the router
+
+Register the states when the application starts with
+[`provideUIRouter`](api/functions/provideUIRouter.md):
+
+```ts title="main.ts"
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideUIRouter } from '@uirouter/angular';
+import { AppComponent } from './app.component';
+import { aboutState, helloState } from './app.states';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideUIRouter({
+      states: [helloState, aboutState],
+      otherwise: '/hello',
+    }),
+  ],
+}).catch((err) => console.error(err));
+```
+
+`otherwise` sends any URL that matches no state to `/hello`.
+
+If your application uses NgModules instead, import
+[`UIRouterModule.forRoot`](api/classes/UIRouterModule.md) with the same
+options in the root module.
+
+## Add links and a view
+
+```ts title="app.component.ts"
+import { Component } from '@angular/core';
+import { UIRouterModule } from '@uirouter/angular';
+
+@Component({
+  selector: 'app-root',
+  imports: [UIRouterModule],
+  template: `
+    <nav>
+      <a uiSref="hello" uiSrefActive="active">Hello</a>
+      <a uiSref="about" uiSrefActive="active">About</a>
+    </nav>
+    <ui-view></ui-view>
+  `,
+})
+export class AppComponent {}
+```
+
+- `<ui-view>` ([`UIView`](api/classes/UIView.md)) is the viewport where the
+  active state's component is shown.
+- `uiSref` ([`UISref`](api/classes/UISref.md)) links to a state by name and
+  sets the link's `href` from the state's URL.
+- `uiSrefActive` ([`UISrefActive`](api/classes/UISrefActive.md)) adds the
+  `active` class while that state is active.
+
+Run the application: `/hello` shows the hello component, and clicking
+**About** activates the `about` state and updates the URL to `/about`.
+
+## Next steps
+
+- Read about states, views, parameters, and transitions in
+  [UI-Router features](/about/features).
+- Navigate from code with [`StateService.go`](api/classes/StateService.md).
+- See what changed in each release in the [release notes](release-notes.md).

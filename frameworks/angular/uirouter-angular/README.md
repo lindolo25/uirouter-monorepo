@@ -31,4 +31,4 @@ application states in a transaction-like manner.
 
 ## Reporting issues and Contributing
 
-Please read our [Contributor guidelines](CONTRIBUTING.md) before reporting an issue or creating a pull request.
+Please read our [Contributor guidelines](https://github.com/ui-router/ui-router/blob/main/frameworks/angular/uirouter-angular/CONTRIBUTING.md) before reporting an issue or creating a pull request.

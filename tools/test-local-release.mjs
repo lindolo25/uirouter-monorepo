@@ -6,6 +6,7 @@ import {
   mkdirSync,
   readFileSync,
   readdirSync,
+  realpathSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
@@ -583,7 +584,7 @@ if(args[0]==='publish') {
     );
     const result = JSON.parse(readFileSync(log));
     assert.equal(result.registry, registry);
-    assert.equal(result.cwd, source);
+    assert.equal(result.cwd, realpathSync(source));
     assert.equal(result.manifest.name, "angular-ui-router");
     assert.equal(
       readFileSync(path.join(source, "package.json"), "utf8"),

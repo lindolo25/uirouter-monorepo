@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "baseUrl": "../../..",
+    "paths": {
+      "@uirouter/core": ["core/src/index.ts"],
+      "@uirouter/core/lib/*": ["core/src/*"],
+      "@uirouter/angular": ["frameworks/angular/uirouter-angular/src/index.ts"],
+      "@uirouter/angularjs": ["frameworks/angularjs/uirouter-angularjs/src/index.ts"],
+      "@uirouter/angularjs/lib/*": ["frameworks/angularjs/uirouter-angularjs/src/*"],
+      "@uirouter/rx": ["plugins/rx/src/index.ts"]
+    }
+  }
+}

@@ -94,7 +94,8 @@ Evaluate **Astro Starlight** and **Docusaurus** with the same small prototype:
 Select the generator only after measuring authoring ergonomics, TypeDoc
 integration, versioning, search, build time, accessibility, and the ability
 to deploy a static artifact.  The selection record will explain why the other
-candidate was not chosen.
+candidate was not chosen.  The fixed criteria, gates, and results table are in
+[DOCS_GENERATOR_SELECTION.md](DOCS_GENERATOR_SELECTION.md).
 
 ### Hosting and deployment
 

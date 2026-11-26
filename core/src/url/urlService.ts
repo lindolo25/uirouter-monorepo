@@ -7,6 +7,8 @@ import { TargetState, TargetStateDef } from '../state';
 
 /**
  * API for URL management
+ *
+ * @category Services
  */
 export class UrlService implements LocationServices, UrlSyncApi {
   /** @internal */ private _stopListeningFn: Function;

@@ -1,0 +1,6 @@
+# Gate G3: generated files stay out of Git.
+/build
+/.docusaurus
+# Generated per package at build time: API reference and release notes.
+/packages/*/api
+/packages/*/release-notes.md

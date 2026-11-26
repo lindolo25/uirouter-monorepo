@@ -50,12 +50,12 @@ export class AnchorUISref {
 }
 
 /**
- * A directive when clicked, initiates a [[Transition]] to a [[TargetState]].
+ * A directive when clicked, initiates a {@link Transition} to a {@link TargetState}.
  *
  * ### Purpose
  *
  * This directive is applied to anchor tags (`<a>`) or any other clickable element.  It is a state reference (or sref --
- * similar to an href).  When clicked, the directive will transition to that state by calling [[StateService.go]],
+ * similar to an href).  When clicked, the directive will transition to that state by calling {@link StateService.go},
  * and optionally supply state parameter values and transition options.
  *
  * When this directive is on an anchor tag, it will also add an `href` attribute to the anchor.
@@ -71,7 +71,7 @@ export class AnchorUISref {
  *
  * - `uiParams`: any target state parameter values, as an object, e.g., `[uiParams]="{ fooId: bar.fooId }"`
  *
- * - `uiOptions`: [[TransitionOptions]], e.g., `[uiOptions]="{ inherit: false }"`
+ * - `uiOptions`: {@link TransitionOptions}, e.g., `[uiOptions]="{ inherit: false }"`
  *
  * @example
  * ```html
@@ -89,6 +89,8 @@ export class AnchorUISref {
  * <!-- Targets "bar" state and parameter, doesn't inherit existing parameters-->
  * <a uiSref="bar" [uiParams]="{ barId: foo.barId }" [uiOptions]="{ inherit: false }">Bar {{foo.barId}}</a>
  * ```
+ *
+ * @category Components
  */
 @Directive({
   selector: '[uiSref]',
@@ -125,7 +127,7 @@ export class UISref implements OnChanges {
 
   /**
    * An observable (ReplaySubject) of the state this UISref is targeting.
-   * When the UISref is clicked, it will transition to this [[TargetState]].
+   * When the UISref is clicked, it will transition to this {@link TargetState}.
    */
   public targetState$ = new ReplaySubject<TargetState>(1);
 

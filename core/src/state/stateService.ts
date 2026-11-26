@@ -40,6 +40,8 @@ export type OnInvalidCallback = (toState?: TargetState, fromState?: TargetState,
  * Provides services related to ui-router states.
  *
  * This API is located at `router.stateService` ([[UIRouter.stateService]])
+ *
+ * @category Services
  */
 export class StateService {
   /** @internal */

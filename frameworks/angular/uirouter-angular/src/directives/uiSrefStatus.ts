@@ -26,7 +26,7 @@ interface TransEvt {
 }
 
 /**
- * UISref status emitted from [[UISrefStatus]]
+ * UISref status emitted from {@link UISrefStatus}
  */
 export interface SrefStatus {
   /** The sref's target state (or one of its children) is currently active */
@@ -132,9 +132,9 @@ function mergeSrefStatus(left: SrefStatus, right: SrefStatus): SrefStatus {
 }
 
 /**
- * A directive which emits events when a paired [[UISref]] status changes.
+ * A directive which emits events when a paired {@link UISref} status changes.
  *
- * This directive is primarily used by the [[UISrefActive]] directives to monitor `UISref`(s).
+ * This directive is primarily used by the {@link UISrefActive} directives to monitor `UISref`(s).
  *
  * This directive shares two attribute selectors with `UISrefActive`:
  *
@@ -144,7 +144,7 @@ function mergeSrefStatus(left: SrefStatus, right: SrefStatus): SrefStatus {
  * Thus, whenever a `UISrefActive` directive is created, a `UISrefStatus` directive is also created.
  *
  * Most apps should simply use `UISrefActive`, but some advanced components may want to process the
- * [[SrefStatus]] events directly.
+ * {@link SrefStatus} events directly.
  *
  * ```js
  * <li (uiSrefStatus)="onSrefStatusChanged($event)">
@@ -153,7 +153,7 @@ function mergeSrefStatus(left: SrefStatus, right: SrefStatus): SrefStatus {
  * ```
  *
  * The `uiSrefStatus` event is emitted whenever an enclosed `uiSref`'s status changes.
- * The event emitted is of type [[SrefStatus]], and has boolean values for `active`, `exact`, `entering`, and `exiting`; also has a [[StateOrName]] `identifier`value.
+ * The event emitted is of type {@link SrefStatus}, and has boolean values for `active`, `exact`, `entering`, and `exiting`; also has a {@link StateOrName} `identifier`value.
  *
  * The values from this event can be captured and stored on a component (then applied, e.g., using ngClass).
  *
@@ -178,6 +178,8 @@ function mergeSrefStatus(left: SrefStatus, right: SrefStatus): SrefStatus {
  * ---
  *
  * This API is subject to change.
+ *
+ * @category Components
  */
 @Directive({
   selector: '[uiSrefStatus]',

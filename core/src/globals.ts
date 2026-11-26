@@ -10,6 +10,8 @@ import { Disposable } from './interface';
  *
  * This is where we hold the global mutable state such as current state, current
  * params, current transition, etc.
+ *
+ * @category Services
  */
 export class UIRouterGlobals implements Disposable {
   /**

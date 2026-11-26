@@ -31,7 +31,11 @@ The manual command updates that package's version and changelog, regenerates the
 
 React and React Hybrid accept compatible UI-Router dependency updates using caret ranges, keeping their existing minimum versions. After packing, run `npm run test:consumers -- react --minimum` or `npm run test:consumers -- react-hybrid --minimum` to test the new package against its published minimum dependencies. CI runs these alongside the normal tests against current package archives.
 
+After a release, deploy the documentation: run the **Docs** workflow manually on `main` once the release is merged (see [docs/README.md](docs/README.md#when-to-deploy)).
+
 Review dependent package ranges when bumping versions. Packages are released individually; coordinated Angular major updates remain a maintainer decision. See [package configuration](tools/packages.json) for publish directories and imported history paths.
+
+Release Please is being set up to propose independent package releases. See [draft release PR setup](planning/RELEASE_PLEASE_SETUP.md) for the GitHub App settings and current limits. The workflow does not publish packages yet.
 
 ## Migration history and remaining work
 

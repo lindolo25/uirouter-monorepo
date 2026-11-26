@@ -103,10 +103,16 @@ export interface UIInjector {
   getNative<T>(token: any): T;
 }
 
+/**
+ * The interface implemented by UI-Router plugins.
+ *
+ * @category Plugins and debugging
+ */
 export interface UIRouterPlugin extends Disposable {
   name: string;
 }
 
+/** A base class for UI-Router plugins, with a no-op `dispose`. */
 export abstract class UIRouterPluginBase implements UIRouterPlugin, Disposable {
   abstract name: string;
   dispose(router: UIRouter) {}
